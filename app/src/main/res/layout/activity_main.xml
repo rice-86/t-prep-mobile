@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whiteSmoke">
+    android:background="@color/whiteSmoke"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/yourSubjects"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mainMargin"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/mainMargin"
         android:text="@string/yourSubjectsText"
         android:textSize="@dimen/mainTextSize"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </TextView>
+        android:textStyle="bold" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/defaultMargin"
-        app:layout_constraintTop_toBottomOf="@id/yourSubjects"
-        tools:layout_editor_absoluteX="@dimen/defaultMargin">
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:layout_marginHorizontal="@dimen/defaultMargin"
+        android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/subjectsRecyclerView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </ScrollView>
 
@@ -45,11 +40,7 @@
         android:backgroundTint="@color/tPrepBackColor"
         android:text="@string/addSubjectText"
         android:textColor="@color/tPrepTextColor"
-        android:textSize="@dimen/defaultTextSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints">
-    </Button>
+        android:layout_gravity="right"
+        android:textSize="@dimen/defaultTextSize" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
