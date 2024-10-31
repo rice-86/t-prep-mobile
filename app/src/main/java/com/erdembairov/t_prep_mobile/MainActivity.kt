@@ -32,6 +32,21 @@ class MainActivity : AppCompatActivity() {
         // Отображение предметов
 
         subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+        subjects.add(Subject("Example", "example"))
+
 
         val subsRV = findViewById<RecyclerView>(R.id.subjectsRecyclerView)
 
@@ -50,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         subsRV.adapter = adapter
 
         // -------------------------------------------------------------------------------------- //
+        // Подключение к БД и иъятие предметов, локальное сохранение
     }
 
     private fun showSubjectDetails(subject: Subject) {
