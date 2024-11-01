@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         subsRV.adapter = adapter
 
         // -------------------------------------------------------------------------------------- //
-        // Подключение к БД и иъятие предметов, локальное сохранение
+        // Подключение к БД и иpъятие предметов, локальное сохранение
     }
 
     private fun showSubjectDetails(subject: Subject) {
