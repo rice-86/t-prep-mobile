@@ -33,7 +33,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/addSubject"
+        android:id="@+id/addSubjectButton"
         android:layout_width="@dimen/buttonWidth"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/defaultMargin"

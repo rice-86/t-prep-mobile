@@ -3,8 +3,88 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whiteSmoke">
+    android:background="@color/whiteSmoke"
+    android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/defaultMargin"
+        android:layout_marginTop="@dimen/mainMargin"
+        android:text="@string/addNameSubjectText"
+        android:textSize="@dimen/defaultTextSize" />
+
+    <EditText
+        android:id="@+id/nameSubject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/defaultMargin"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:hint="@string/addNameSubjectHint"
+        android:textSize="@dimen/defaultTextSize" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/defaultMargin"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:text="@string/chooseFileText"
+        android:textSize="@dimen/defaultTextSize" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/defaultMargin"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/chooseFileButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/lightGrey"
+            android:text="@string/chooseFileButtonText"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/defaultTextSize" />
+
+        <TextView
+            android:id="@+id/fileNotChoosed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/fileNotChoosedText"
+            android:textSize="@dimen/defaultTextSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/defaultMargin"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="@dimen/buttonWidth"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/lightGrey"
+            android:text="@string/cancelText"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/defaultTextSize" />
+
+        <Button
+            android:id="@+id/saveSubjectButton"
+            android:layout_width="@dimen/buttonWidth"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/tPrepBackColor"
+            android:text="@string/saveText"
+            android:layout_marginStart="@dimen/startMarginButton"
+            android:textColor="@color/tPrepTextColor"
+            android:textSize="@dimen/defaultTextSize" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

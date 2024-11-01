@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         // -------------------------------------------------------------------------------------- //
         // Кнопка
 
-        val addSubBt = findViewById<Button>(R.id.addSubject)
+        val addSubBt = findViewById<Button>(R.id.addSubjectButton)
 
         addSubBt.setOnClickListener{
             val intent = Intent(this, AddSubjectActivity::class.java)
@@ -31,22 +31,9 @@ class MainActivity : AppCompatActivity() {
         // -------------------------------------------------------------------------------------- //
         // Отображение предметов
 
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-        subjects.add(Subject("Example", "example"))
-
+        for (i in 1..10){
+            subjects.add(Subject("ExampleSub$i", "exampleId$i"))
+        }
 
         val subsRV = findViewById<RecyclerView>(R.id.subjectsRecyclerView)
 

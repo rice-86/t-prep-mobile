@@ -5,8 +5,9 @@
     <string name="addNameSubjectText">Укажите название предмета</string>
     <string name="addNameSubjectHint">Введите название</string>
     <string name="chooseFileText">Выберите файл</string>
-    <string name="chooseFileTextButton">Выбрать файл</string>
+    <string name="chooseFileButtonText">Выбрать файл</string>
     <string name="saveText">Сохранить</string>
     <string name="cancelText">Отмена</string>
     <string name="deleteText">Удалить</string>
+    <string name="fileNotChoosedText">Файл не выбран</string>
 </resources>

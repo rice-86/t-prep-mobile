@@ -3,6 +3,7 @@
     <dimen name="mainMargin">20dp</dimen>
     <dimen name="defaultMargin">16dp</dimen>
     <dimen name="buttonWidth">160dp</dimen>
+    <dimen name="startMarginButton">50dp</dimen>
 
     <dimen name="mainTextSize">28sp</dimen>
     <dimen name="defaultTextSize">20sp</dimen>
