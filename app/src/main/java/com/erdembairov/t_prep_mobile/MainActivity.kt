@@ -6,62 +6,47 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.erdembairov.t_prep_mobile.subjects.Subject
-import com.erdembairov.t_prep_mobile.subjects.SubjectsAdapter
+import com.erdembairov.t_prep_mobile.subjectSettings.Subject
+import com.erdembairov.t_prep_mobile.subjectSettings.SubjectsAdapter
 
 class MainActivity : AppCompatActivity() {
-    private var subjects: ArrayList<Subject> = ArrayList()
-    private lateinit var adapter: SubjectsAdapter
+    // var subjects: ArrayList<Subject> = ServerConnect.apiGet_Subjects(Common.user_id)
+    var subjects: ArrayList<Subject> = ArrayList()
+    lateinit var adapter: SubjectsAdapter
+    lateinit var addSubjectBt: Button
+    lateinit var subjectsRV: RecyclerView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // -------------------------------------------------------------------------------------- //
-        // Кнопка
-
-        val addSubBt = findViewById<Button>(R.id.addSubjectButton)
-
-        addSubBt.setOnClickListener{
-            val intent = Intent(this, AddSubjectActivity::class.java)
-            startActivity(intent)
-        }
-
-        // -------------------------------------------------------------------------------------- //
-        // Отображение предметов
-
-        for (i in 1..10){
-            subjects.add(Subject("ExampleSub$i", "exampleId$i"))
-        }
-
-        val subsRV = findViewById<RecyclerView>(R.id.subjectsRecyclerView)
+        addSubjectBt = findViewById(R.id.addSubjectButton)
+        subjectsRV = findViewById(R.id.subjectsRecyclerView)
 
         adapter = SubjectsAdapter(subjects)
+        adapter.setOnItemClickListener { position -> showSubjectDetails(subjects[position]) }
+        adapter.setOnDeleteClickListener { position -> deleteSubject(subjects[position]) }
 
-        adapter.setOnItemClickListener { position ->
-            val subject = subjects[position]
-            showSubjectDetails(subject)
+        subjectsRV.adapter = adapter
+
+        // Открыть страницу добавления предмета
+        addSubjectBt.setOnClickListener{
+            startActivity(Intent(this, AddSubjectActivity::class.java))
         }
-
-        adapter.setOnDeleteClickListener { position ->
-            val subject = subjects[position]
-            deleteSubject(subject)
-        }
-
-        subsRV.adapter = adapter
-
-        // -------------------------------------------------------------------------------------- //
-        // Подключение к БД и иpъятие предметов, локальное сохранение
     }
 
+    // Отобразить подробности предмета
     private fun showSubjectDetails(subject: Subject) {
 
     }
 
+    // Удалить предмет
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteSubject(subject: Subject) {
         subjects.remove(subject)
         adapter.notifyDataSetChanged()
+
+        // дополнить функцией пост-запроса на удаление
     }
 }

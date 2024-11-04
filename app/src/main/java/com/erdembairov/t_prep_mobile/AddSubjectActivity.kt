@@ -1,5 +1,6 @@
 package com.erdembairov.t_prep_mobile
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -11,72 +12,65 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import java.io.InputStream
 
 class AddSubjectActivity: AppCompatActivity() {
+    lateinit var myFile: InputStream
+
+    lateinit var nameSubjectET: EditText
+    lateinit var chooseFileBt: Button
+    lateinit var fileNotChoosedTV: TextView
+    lateinit var saveSubjectBt: Button
+    lateinit var cancelBt: Button
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_subject)
 
-        val nameSubEt = findViewById<EditText>(R.id.nameSubject)
+        nameSubjectET = findViewById(R.id.nameSubject)
+        chooseFileBt = findViewById(R.id.chooseFileButton)
+        fileNotChoosedTV = findViewById(R.id.fileNotChoosed)
+        saveSubjectBt = findViewById(R.id.saveSubjectButton)
+        cancelBt = findViewById(R.id.cancelButton)
 
-        val chooseFileBt = findViewById<Button>(R.id.chooseFileButton)
-        val fileNotChoosedTx = findViewById<TextView>(R.id.fileNotChoosed)
-
-        val saveSubjectBt = findViewById<Button>(R.id.saveSubjectButton)
-        val cancelBt = findViewById<Button>(R.id.cancelButton)
-
-        // -------------------------------------------------------------------------------------- //
-        // Действие выбора файла
-
-        val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                val fileUri = intent?.data
-
-                if (fileUri != null){
-                    val fileName = getFileName(fileUri)
-                    fileNotChoosedTx.text = "Выбран файл: $fileName"
-
-                    val myFile = contentResolver.openInputStream(fileUri)
-                    if (myFile != null) {
-                        val content = myFile.bufferedReader().readText()
-
-                        // пум пум пуум
-                    }
-                }
-            }
-        }
-
-        // -------------------------------------------------------------------------------------- //
-        // Действия на кнопки
-
+        // Кнопка "Выбрать файл"
         chooseFileBt.setOnClickListener {
-            val intent = Intent().setType("text/plain").setAction(Intent.ACTION_GET_CONTENT)
-            startForResult.launch(intent)
+            startForResult.launch(Intent().setType("text/plain").setAction(Intent.ACTION_GET_CONTENT))
         }
 
+        // Кнопка "Отмена"
         cancelBt.setOnClickListener {
             finish()
         }
 
+        // Кнопка "Сохранить"
         saveSubjectBt.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
+            ServerConnect.apiPost_addSubject(nameSubjectET.toString(), Common.user_id, myFile.readBytes())
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val fileUri = result.data?.data
+
+            if (fileUri != null){
+                chooseFileBt.text = "Выбрать другой файл"
+                fileNotChoosedTV.text = "Выбран файл: ${getFileName(fileUri)}"
+                myFile = contentResolver.openInputStream(fileUri)!!
+            }
         }
     }
 
     private fun getFileName(uri: Uri): String? {
-        var name: String? = null
-        if (uri.scheme == "content") {
-            val cursor = contentResolver.query(uri, null, null, null, null)
-            cursor?.use {
-                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (it.moveToFirst()) {
-                    name = it.getString(nameIndex)
-                }
-            }
+        if (uri.scheme != "content") { return uri.lastPathSegment }
+
+        return contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (cursor.moveToFirst()) { cursor.getString(nameIndex) } else null
         }
-        return name ?: uri.lastPathSegment
     }
+
 }
