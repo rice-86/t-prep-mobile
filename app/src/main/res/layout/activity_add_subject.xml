@@ -1,89 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainAddSubject"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/defMargin"
-        android:layout_marginTop="@dimen/mainMargin"
-        android:text="Укажите название предмета"
-        android:textSize="@dimen/defTextSize" />
-
-    <EditText
-        android:id="@+id/nameSubject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/defMargin"
-        android:layout_marginTop="@dimen/defMargin"
-        android:hint="Введите название"
-        android:textSize="@dimen/defTextSize" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/defMargin"
-        android:layout_marginTop="@dimen/defMargin"
-        android:text="Выберите файл"
-        android:textSize="@dimen/defTextSize" />
+    android:layout_width="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/defMargin"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/chooseFileButton"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/lightGrey"
-            android:text="Выбрать файл"
-            android:textColor="@color/grey"
+            android:layout_marginStart="@dimen/defMargin"
+            android:layout_marginTop="@dimen/mainMargin"
+            android:text="Укажите название предмета"
+            android:textSize="@dimen/defTextSize" />
+
+        <EditText
+            android:id="@+id/nameSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/defMargin"
+            android:layout_marginTop="@dimen/defMargin"
+            android:hint="Введите название"
             android:textSize="@dimen/defTextSize" />
 
         <TextView
-            android:id="@+id/fileNotChoosed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/defMargin"
             android:layout_marginTop="@dimen/defMargin"
-            android:text="Файл не выбран"
+            android:text="Выберите файл"
             android:textSize="@dimen/defTextSize" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/defMargin"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/chooseFileButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/lightGrey"
+                android:text="Выбрать файл"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/defTextSize" />
+
+            <TextView
+                android:id="@+id/fileNotChoosed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/defMargin"
+                android:text="Файл не выбран"
+                android:textSize="@dimen/defTextSize" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/defMargin"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="@dimen/buttonWidth"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/lightGrey"
+                android:text="Отмена"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/defTextSize" />
+
+            <Button
+                android:id="@+id/saveSubjectButton"
+                android:layout_width="@dimen/buttonWidth"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/startMarginButton"
+                android:layout_weight="1"
+                android:backgroundTint="@color/tPrepBackColor"
+                android:text="Сохранить"
+                android:textColor="@color/tPrepTextColor"
+                android:textSize="@dimen/defTextSize" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/defMargin"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="@dimen/buttonWidth"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/lightGrey"
-            android:text="Отмена"
-            android:textColor="@color/grey"
-            android:textSize="@dimen/defTextSize" />
-
-        <Button
-            android:id="@+id/saveSubjectButton"
-            android:layout_width="@dimen/buttonWidth"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/tPrepBackColor"
-            android:text="Сохранить"
-            android:layout_marginStart="@dimen/startMarginButton"
-            android:textColor="@color/tPrepTextColor"
-            android:textSize="@dimen/defTextSize" />
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

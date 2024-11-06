@@ -1,4 +1,4 @@
-package com.erdembairov.t_prep_mobile
+package com.erdembairov.t_prep_mobile.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.erdembairov.t_prep_mobile.CommonData
+import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.subjectSettings.Subject
 import com.erdembairov.t_prep_mobile.subjectSettings.SubjectsAdapter
 
 class MainActivity : AppCompatActivity() {
-    // var subjects: ArrayList<Subject> = ServerConnect.apiGet_Subjects(Common.user_id)
+    // var subjects: ArrayList<Subject> = ServerConnect.get_Subjects(CommonData.user_id)
     var subjects: ArrayList<Subject> = ArrayList()
     lateinit var adapter: SubjectsAdapter
     lateinit var addSubjectBt: Button
@@ -38,7 +40,10 @@ class MainActivity : AppCompatActivity() {
 
     // Отобразить подробности предмета
     private fun showSubjectDetails(subject: Subject) {
-
+        startActivity(Intent(this, QAActivity::class.java)
+            .putExtra("id_subject", subject.id)
+            .putExtra("name_subject", subject.name))
+        CommonData.openedSubject = subject
     }
 
     // Удалить предмет
