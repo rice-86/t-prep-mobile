@@ -7,48 +7,46 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 
 object ServerRequest {
-
-    fun get_QAs(): ArrayList<QA>{
+    fun get_QAs(): ArrayList<QA> {
         val qas = ArrayList<QA>()
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/")
+            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${CommonData.openedSubject.id}/")
             .get()
             .build()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("Ошибка отправки GET", "${e.message}")
+                Log.e("Ошибка отправки GET QAs", "${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     response.body?.string()?.let { responseBody ->
-                        Log.e("Успешный ответ GET", responseBody)
-                        val jsonArray = JSONArray(responseBody)
-                        for (i in 0 until jsonArray.length()) {
-                            val jsonObject = jsonArray.getJSONObject(i)
+                        Log.e("Успешный ответ GET QAs", responseBody)
 
-                            val question = jsonObject.getString("question")
-                            val answer = jsonObject.getString("answer")
+                        val jsonObject = JSONObject(responseBody)
+                        val questionsObject = jsonObject.getJSONObject("questions")
 
-                            qas.add(QA(question, answer, false))
+                        for (key in questionsObject.keys()) {
+                            val answer = questionsObject.getString(key)
+                            qas.add(QA(key, answer, false))
                         }
                     }
                 } else {
-                    Log.e("Ошибка ответа GET", "${response.code}")
+                    Log.e("Ошибка ответа GET QAs", "${response.code}")
                 }
             }
         })
 
         return qas
     }
-
 
     fun get_Subjects(): ArrayList<Subject> {
         val subjects = ArrayList<Subject>()
@@ -61,13 +59,13 @@ object ServerRequest {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("Ошибка отправки GET", "${e.message}")
+                Log.e("Ошибка отправки GET Subjects", "${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     response.body?.string()?.let { responseBody ->
-                        Log.e("Успешный ответ GET", responseBody)
+                        Log.e("Успешный ответ GET Subjects", responseBody)
                         val jsonArray = JSONArray(responseBody)
                         for (i in 0 until jsonArray.length()) {
                             val jsonObject = jsonArray.getJSONObject(i)
@@ -80,14 +78,13 @@ object ServerRequest {
                         }
                     }
                 } else {
-                    Log.e("Ошибка ответа GET", "${response.code}")
+                    Log.e("Ошибка ответа GET Subjects", "${response.code}")
                 }
             }
         })
 
         return subjects
     }
-
 
     fun post_addSubject(name_subject: String, file: File) {
         val client = OkHttpClient()
@@ -106,14 +103,20 @@ object ServerRequest {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("Ошибка отправки POST", "${e.message}")
+                Log.e("Ошибка отправки POST Subject", "${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    Log.e("Успешный ответ POST", "${response.body?.string()}")
+                    response.body?.string()?.let { responseBody ->
+                        Log.e("Успешный ответ POST Subject", responseBody)
+                        val jsonObject = JSONObject(responseBody)
+                        val id = jsonObject.getString("id")
+
+                        CommonData.subjects.add(Subject(name_subject, id, ArrayList()))
+                    }
                 } else {
-                    Log.e("Ошибка ответа POST", "${response.code}")
+                    Log.e("Ошибка ответа POST Subject", "${response.code}")
                 }
             }
         })

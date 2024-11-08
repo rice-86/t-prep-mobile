@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class Subject(
     val name: String,
     val id: String,
-    val qas: ArrayList<QA>
+    var qas: ArrayList<QA>
 )

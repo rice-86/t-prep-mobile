@@ -57,7 +57,7 @@ class AddSubjectActivity: AppCompatActivity() {
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
                 if (::myFile.isInitialized) {
                     ServerRequest.post_addSubject(nameSubjectET.text.toString(), myFile)
-                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 } else {
                     snackBarCreate("Вы не выбрали файл", mainAddSubject)
                     Log.e("FileError", "Файл не выбран")
