@@ -16,7 +16,6 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
     class SubjectHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mainView: LinearLayout = itemView.findViewById(R.id.mainSubject)
         var nameView: TextView = itemView.findViewById(R.id.name)
-        var idView: TextView = itemView.findViewById(R.id.id)
         var deleteBtView: Button = itemView.findViewById(R.id.deleteButton)
     }
 
@@ -33,7 +32,6 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
     override fun onBindViewHolder(holder: SubjectHolder, position: Int) {
         val subject = subjects[position]
         holder.nameView.text = subject.name
-        holder.idView.text = "id предмета в БД: ${subject.id}"
 
         holder.mainView.setOnClickListener {
             onItemClickListener?.invoke(position)

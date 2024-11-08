@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
+import com.erdembairov.t_prep_mobile.ServerRequest
 import com.erdembairov.t_prep_mobile.subjectSettings.Subject
 import com.erdembairov.t_prep_mobile.subjectSettings.SubjectsAdapter
 
 class MainActivity : AppCompatActivity() {
-    // var subjects: ArrayList<Subject> = ServerConnect.get_Subjects(CommonData.user_id)
-    var subjects: ArrayList<Subject> = ArrayList()
+    var subjects: ArrayList<Subject> = ServerRequest.get_Subjects()
     lateinit var adapter: SubjectsAdapter
     lateinit var addSubjectBt: Button
     lateinit var subjectsRV: RecyclerView

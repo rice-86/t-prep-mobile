@@ -14,9 +14,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.ServerConnect
+import com.erdembairov.t_prep_mobile.ServerRequest
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.InputStream
@@ -57,8 +56,8 @@ class AddSubjectActivity: AppCompatActivity() {
         saveSubjectBt.setOnClickListener {
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
                 if (::myFile.isInitialized) {
+                    ServerRequest.post_addSubject(nameSubjectET.text.toString(), myFile)
                     startActivity(Intent(this, MainActivity::class.java))
-                    ServerConnect.post_addSubject(nameSubjectET.text.toString(), CommonData.user_id, myFile)
                 } else {
                     snackBarCreate("Вы не выбрали файл", mainAddSubject)
                     Log.e("FileError", "Файл не выбран")
@@ -67,16 +66,6 @@ class AddSubjectActivity: AppCompatActivity() {
                 snackBarCreate("Вы не задали название предмета", mainAddSubject)
             }
         }
-    }
-
-    private fun snackBarCreate(text: String, main: CoordinatorLayout) {
-        val snackbar = Snackbar.make(main, text, Snackbar.LENGTH_SHORT)
-
-        val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
-        params.bottomMargin = 200
-        snackbar.view.layoutParams = params
-
-        snackbar.show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -115,6 +104,16 @@ class AddSubjectActivity: AppCompatActivity() {
             e.printStackTrace()
             return null
         }
+    }
+
+    private fun snackBarCreate(text: String, main: CoordinatorLayout) {
+        val snackbar = Snackbar.make(main, text, Snackbar.LENGTH_SHORT)
+
+        val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
+        params.bottomMargin = 200
+        snackbar.view.layoutParams = params
+
+        snackbar.show()
     }
 
     private fun getFileName(uri: Uri): String? {
