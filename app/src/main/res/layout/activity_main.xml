@@ -4,7 +4,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whiteSmoke"
     android:orientation="vertical">
 
     <TextView
@@ -13,15 +12,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/mainMargin"
-        android:text="@string/yourSubjectsText"
+        android:text="Ваши предметы"
         android:textSize="@dimen/mainTextSize"
         android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/defaultMargin"
-        android:layout_marginHorizontal="@dimen/defaultMargin"
+        android:layout_marginTop="@dimen/defMargin"
+        android:layout_marginHorizontal="@dimen/defMargin"
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -33,14 +32,14 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/addSubject"
+        android:id="@+id/addSubjectButton"
         android:layout_width="@dimen/buttonWidth"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/defaultMargin"
+        android:layout_margin="@dimen/defMargin"
         android:backgroundTint="@color/tPrepBackColor"
-        android:text="@string/addSubjectText"
+        android:text="Добавить предмет"
         android:textColor="@color/tPrepTextColor"
         android:layout_gravity="right"
-        android:textSize="@dimen/defaultTextSize" />
+        android:textSize="@dimen/defTextSize" />
 
 </LinearLayout>

@@ -36,14 +36,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.io.ktor.ktor.client.core3)
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.json)
-    implementation(libs.ktor.client.serialization)
-    implementation(libs.ktor.client.logging)
+//    implementation(libs.io.ktor.ktor.client.core3)
+//    implementation(libs.ktor.client.android)
+//    implementation(libs.ktor.client.json)
+//    implementation(libs.ktor.client.serialization)
+//    implementation(libs.ktor.client.logging)
 
+    implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

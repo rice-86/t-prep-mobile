@@ -1,5 +1,6 @@
-package com.erdembairov.t_prep_mobile.subjects
+package com.erdembairov.t_prep_mobile.subjectSettings
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,9 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
     RecyclerView.Adapter<SubjectsAdapter.SubjectHolder>() {
 
     class SubjectHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var subjectLLView: LinearLayout = itemView.findViewById(R.id.SubjectLL)
-        var nameSubjectView: TextView = itemView.findViewById(R.id.nameSubject)
-        var user_idView: TextView = itemView.findViewById(R.id.user_id)
-        var deleteBtView: Button = itemView.findViewById(R.id.delete)
+        var mainView: LinearLayout = itemView.findViewById(R.id.mainSubject)
+        var nameView: TextView = itemView.findViewById(R.id.name)
+        var deleteBtView: Button = itemView.findViewById(R.id.deleteButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectHolder {
@@ -28,12 +28,12 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
         return subjects.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SubjectHolder, position: Int) {
         val subject = subjects[position]
-        holder.nameSubjectView.text = subject.name
-        holder.user_idView.text = subject.user_id
+        holder.nameView.text = subject.name
 
-        holder.subjectLLView.setOnClickListener {
+        holder.mainView.setOnClickListener {
             onItemClickListener?.invoke(position)
         }
 
@@ -45,11 +45,6 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
     private var onItemClickListener: ((Int) -> Unit)? = null
     private var onDeleteClickListener: ((Int) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Int) -> Unit) {
-        onItemClickListener = listener
-    }
-
-    fun setOnDeleteClickListener(listener: (Int) -> Unit) {
-        onDeleteClickListener = listener
-    }
+    fun setOnItemClickListener(listener: (Int) -> Unit) { onItemClickListener = listener }
+    fun setOnDeleteClickListener(listener: (Int) -> Unit) { onDeleteClickListener = listener }
 }

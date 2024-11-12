@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nameChoosedSubject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/mainMargin"
+            android:text="Предмет"
+            android:textSize="@dimen/mainTextSize"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/qaRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/defMargin"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <Button
+            android:id="@+id/finishButton"
+            android:layout_width="@dimen/buttonWidth"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginHorizontal="@dimen/defMargin"
+            android:layout_marginBottom="@dimen/defMargin"
+            android:backgroundTint="@color/tPrepBackColor"
+            android:text="Закончить"
+            android:textColor="@color/tPrepTextColor"
+            android:textSize="@dimen/defTextSize" />
+
+    </LinearLayout>
+
+</ScrollView>

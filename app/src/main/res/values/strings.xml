@@ -1,12 +1,3 @@
 <resources>
     <string name="app_name">T-Prep</string>
-    <string name="yourSubjectsText">Ваши предметы</string>
-    <string name="addSubjectText">Добавить предмет</string>
-    <string name="addNameSubjectText">Укажите название предмета</string>
-    <string name="addNameSubjectHint">Введите название</string>
-    <string name="chooseFileText">Выберите файл</string>
-    <string name="chooseFileTextButton">Выбрать файл</string>
-    <string name="saveText">Сохранить</string>
-    <string name="cancelText">Отмена</string>
-    <string name="deleteText">Удалить</string>
 </resources>
