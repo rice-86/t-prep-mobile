@@ -35,6 +35,11 @@ class PartActivity: AppCompatActivity() {
         }
 
         partRV.adapter = adapter
+
+        testBt.setOnClickListener {
+            startActivity(Intent(this, TestActivity::class.java))
+            CommonData.openedPart = CommonData.openedSubject.parts[0]
+        }
     }
 
     private fun showPartDetails(part: Part) {

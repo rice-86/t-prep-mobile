@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
         // ---
 
         val qas = ArrayList<QA>()
-        qas.add(QA("Какой сырок я предпочитаю?", "Ванильный и с кокосом", false))
-        qas.add(QA("Какой сейчас спринт?", "Второй", false))
+        qas.add(QA("Какой сырок я предпочитаю?", "Ванильный и с кокосом", false, false))
+        qas.add(QA("Какой сейчас спринт?", "Второй", false, false))
 
         val parts = ArrayList<Part>()
-        parts.add(Part("Часть 1", qas))
-        parts.add(Part("Часть 2", qas))
+        parts.add(Part("Часть 1", "123", qas))
+        parts.add(Part("Часть 2", "453", qas))
 
         CommonData.subjects.add(Subject("Математика", "100", parts))
         CommonData.subjects.add(Subject("Физика", "101", parts))

@@ -45,7 +45,7 @@ object ServerRequest {
 
                         for (key in questionsObject.keys()) {
                             val answer = questionsObject.getString(key)
-                            qas.add(QA(key, answer, false))
+                            qas.add(QA(key, answer, false, false))
                         }
                     }
                 } else {

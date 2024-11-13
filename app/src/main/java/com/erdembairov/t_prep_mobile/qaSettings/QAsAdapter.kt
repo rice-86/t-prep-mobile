@@ -42,6 +42,12 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
             holder.answerView.visibility = View.GONE
             holder.arrowIconView.setImageResource(R.drawable.ic_arrow_down)
         }
+
+        if (qa.testStatus) {
+            holder.arrowIconView.visibility = View.GONE
+        } else {
+            holder.arrowIconView.visibility = View.VISIBLE
+        }
     }
 
     private var onItemClickListener: ((Int) -> Unit)? = null
