@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
 
-class QAsAdapter(private val qas: ArrayList<QA>) : RecyclerView.Adapter<QAsAdapter.QAHolder>() {
+class QAsAdapter(private val qas: ArrayList<QA>) :
+    RecyclerView.Adapter<QAsAdapter.QAHolder>() {
 
     class QAHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var questionView: TextView = itemView.findViewById(R.id.question)

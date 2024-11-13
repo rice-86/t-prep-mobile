@@ -1,7 +1,6 @@
 package com.erdembairov.t_prep_mobile.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -10,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerRequest
+import com.erdembairov.t_prep_mobile.partSettings.Part
+import com.erdembairov.t_prep_mobile.qaSettings.QA
 import com.erdembairov.t_prep_mobile.subjectSettings.Subject
 import com.erdembairov.t_prep_mobile.subjectSettings.SubjectsAdapter
 
@@ -27,6 +28,21 @@ class MainActivity : AppCompatActivity() {
         subjectsRV = findViewById(R.id.subjectsRecyclerView)
 
         CommonData.subjects = ServerRequest.get_Subjects()
+
+        // ---
+
+        val qas = ArrayList<QA>()
+        qas.add(QA("Какой сырок я предпочитаю?", "Ванильный и с кокосом", false))
+        qas.add(QA("Какой сейчас спринт?", "Второй", false))
+
+        val parts = ArrayList<Part>()
+        parts.add(Part("Часть 1", qas))
+        parts.add(Part("Часть 2", qas))
+
+        CommonData.subjects.add(Subject("Математика", "100", parts))
+        CommonData.subjects.add(Subject("Физика", "101", parts))
+
+        // ---
 
         adapter = SubjectsAdapter(CommonData.subjects)
         adapter.setOnItemClickListener { position -> showSubjectDetails(CommonData.subjects[position]) }
@@ -48,9 +64,9 @@ class MainActivity : AppCompatActivity() {
 
     // Отобразить подробности предмета
     private fun showSubjectDetails(subject: Subject) {
-        startActivity(Intent(this, QAActivity::class.java))
+        startActivity(Intent(this, PartActivity::class.java))
         CommonData.openedSubject = subject
-        CommonData.openedSubject.qas = ServerRequest.get_QAs()
+        // CommonData.openedSubject.parts = ServerRequest.get_Parts()
     }
 
     // Удалить предмет

@@ -1,6 +1,7 @@
 package com.erdembairov.t_prep_mobile
 
 import android.util.Log
+import com.erdembairov.t_prep_mobile.partSettings.Part
 import com.erdembairov.t_prep_mobile.qaSettings.QA
 import com.erdembairov.t_prep_mobile.subjectSettings.Subject
 import okhttp3.*
@@ -12,6 +13,14 @@ import java.io.File
 import java.io.IOException
 
 object ServerRequest {
+
+    fun get_Parts(): ArrayList<Part> {
+        val parts = ArrayList<Part>()
+
+        return parts
+    }
+
+
     fun get_QAs(): ArrayList<QA> {
         val qas = ArrayList<QA>()
         val client = OkHttpClient()
@@ -72,9 +81,9 @@ object ServerRequest {
 
                             val name = jsonObject.getString("name")
                             val id = jsonObject.getString("id")
-                            val qas = ArrayList<QA>()
+                            val parts = ArrayList<Part>()
 
-                            subjects.add(Subject(name, id, qas))
+                            subjects.add(Subject(name, id, parts))
                         }
                     }
                 } else {

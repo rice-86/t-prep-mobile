@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".activities.AddSubjectActivity" />
         <activity android:name=".activities.QAActivity" />
+        <activity android:name=".activities.PartActivity" />
     </application>
 
 </manifest>

@@ -2,10 +2,8 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,37 +15,37 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/yourSubjects"
+                android:id="@+id/nameChoosedSubject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_20dp"
-                android:text="Ваши предметы"
+                android:text="Предмет"
                 android:textSize="@dimen/mainTextSize"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/subjectsRecyclerView"
+                android:id="@+id/partRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16dp"
-                android:layout_marginTop="@dimen/_16dp"
+                android:layout_margin="@dimen/_16dp"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addSubjectButton"
+        android:id="@+id/testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="@dimen/_16dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginHorizontal="@dimen/_16dp"
+        android:layout_marginBottom="@dimen/_16dp"
         android:backgroundTint="@color/tPrepBackColor"
-        android:text="Добавить предмет"
+        android:text="Тест"
         android:textColor="@color/tPrepTextColor"
-        android:textSize="@dimen/defTextSize"
-        tools:ignore="RtlHardcoded" />
+        android:textSize="@dimen/defTextSize" />
 
 </FrameLayout>
