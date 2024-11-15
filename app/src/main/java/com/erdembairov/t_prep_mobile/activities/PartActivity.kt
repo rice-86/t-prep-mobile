@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.ServerRequest
 import com.erdembairov.t_prep_mobile.partSettings.Part
 import com.erdembairov.t_prep_mobile.partSettings.PartsAdapter
 
@@ -24,7 +23,7 @@ class PartActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_part)
 
-        nameChoosedSubject = findViewById(R.id.nameChoosedSubject)
+        nameChoosedSubject = findViewById(R.id.nameChoosedSubjectTextView)
         nameChoosedSubject.text = CommonData.openedSubject.name
         partRV = findViewById(R.id.partRecyclerView)
         testBt = findViewById(R.id.testButton)

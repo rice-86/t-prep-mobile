@@ -19,7 +19,7 @@
             android:id="@+id/namePart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="partSubject"
+            android:text="Часть предмета"
             android:textSize="@dimen/defTextSize"
             android:textStyle="bold" />
 

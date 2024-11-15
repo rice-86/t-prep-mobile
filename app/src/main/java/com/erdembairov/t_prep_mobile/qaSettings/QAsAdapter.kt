@@ -12,9 +12,9 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
     RecyclerView.Adapter<QAsAdapter.QAHolder>() {
 
     class QAHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var questionView: TextView = itemView.findViewById(R.id.question)
-        var arrowIconView: ImageView = itemView.findViewById(R.id.arrowIcon)
-        var answerView: TextView = itemView.findViewById(R.id.answer)
+        var questionView: TextView = itemView.findViewById(R.id.questionTextView)
+        var arrowIconView: ImageView = itemView.findViewById(R.id.arrowImageView)
+        var answerView: TextView = itemView.findViewById(R.id.answerTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QAHolder {

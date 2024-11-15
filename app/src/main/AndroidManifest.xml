@@ -28,6 +28,7 @@
         <activity android:name=".activities.QAActivity" />
         <activity android:name=".activities.PartActivity" />
         <activity android:name=".activities.TestActivity" />
+        <activity android:name=".activities.AuthActivity" />
     </application>
 
 </manifest>

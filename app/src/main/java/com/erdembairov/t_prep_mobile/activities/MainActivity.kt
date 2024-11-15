@@ -22,6 +22,15 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPreferences = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        if (!isLoggedIn) {
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
+        }
+
         setContentView(R.layout.activity_main)
 
         addSubjectBt = findViewById(R.id.addSubjectButton)

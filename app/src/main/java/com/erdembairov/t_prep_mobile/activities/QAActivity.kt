@@ -21,7 +21,7 @@ class QAActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qa)
 
-        nameChoosedSubject = findViewById(R.id.nameChoosedSubjectAndPart)
+        nameChoosedSubject = findViewById(R.id.nameChoosedPartTextView)
         nameChoosedSubject.text = "${CommonData.openedSubject.name} - ${CommonData.openedPart.name}"
         qaRV = findViewById(R.id.qaRecyclerView)
         finishBt = findViewById(R.id.finishButton)

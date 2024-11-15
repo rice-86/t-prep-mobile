@@ -36,10 +36,10 @@ class AddSubjectActivity: AppCompatActivity() {
         setContentView(R.layout.activity_add_subject)
 
         mainAddSubject = findViewById(R.id.mainAddSubject)
-        nameSubjectET = findViewById(R.id.nameSubject)
+        nameSubjectET = findViewById(R.id.nameEditText)
         chooseFileBt = findViewById(R.id.chooseFileButton)
-        fileNotChoosedTV = findViewById(R.id.fileNotChoosed)
-        saveSubjectBt = findViewById(R.id.saveSubjectButton)
+        fileNotChoosedTV = findViewById(R.id.fileNotChoosedTextView)
+        saveSubjectBt = findViewById(R.id.saveButton)
         cancelBt = findViewById(R.id.cancelButton)
 
         // Кнопка "Выбрать файл"
@@ -56,7 +56,7 @@ class AddSubjectActivity: AppCompatActivity() {
         saveSubjectBt.setOnClickListener {
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
                 if (::myFile.isInitialized) {
-                    ServerRequest.post_addSubject(nameSubjectET.text.toString(), myFile)
+                    ServerRequest.post_AddSubject(nameSubjectET.text.toString(), myFile)
                     finish()
                 } else {
                     snackBarCreate("Вы не выбрали файл", mainAddSubject)

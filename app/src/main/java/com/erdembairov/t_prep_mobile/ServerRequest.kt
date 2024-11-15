@@ -14,19 +14,48 @@ import java.io.IOException
 
 object ServerRequest {
 
+    fun delete_subject(id: String) {
+
+    }
+
+    // нужон редакт, он отключен в MainActivity
     fun get_Parts(): ArrayList<Part> {
         val parts = ArrayList<Part>()
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${CommonData.openedSubject.id}/") // нужон редакт
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("Ошибка отправки GET Parts", "${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    response.body?.string()?.let { responseBody ->
+                        Log.e("Успешный ответ GET Parts", responseBody)
+
+
+                    }
+                } else {
+                    Log.e("Ошибка ответа GET Parts", "${response.code}")
+                }
+            }
+        })
 
         return parts
     }
 
-
+    // нужон редакт, он отключен в PartActivity
     fun get_QAs(): ArrayList<QA> {
         val qas = ArrayList<QA>()
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${CommonData.openedSubject.id}/")
+            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${CommonData.openedSubject.id}/") // нужон редакт
             .get()
             .build()
 
@@ -95,10 +124,10 @@ object ServerRequest {
         return subjects
     }
 
-    fun post_addSubject(name_subject: String, file: File) {
+    fun post_AddSubject(name_subject: String, file: File) {
         val client = OkHttpClient()
 
-       val fileMediaType = "text/plain".toMediaType()
+        val fileMediaType = "text/plain".toMediaType()
         val multipartBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart("name", name_subject)
@@ -126,6 +155,47 @@ object ServerRequest {
                     }
                 } else {
                     Log.e("Ошибка ответа POST Subject", "${response.code}")
+                }
+            }
+        })
+    }
+
+    // Нужен редакт
+    fun post_User(login: String, password: String, callback: (Boolean) -> Unit) {
+        val client = OkHttpClient()
+
+        val multipartBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("login", login)
+            .addFormDataPart("password", password)
+            .build()
+
+        val request = Request.Builder()
+            .url("http://192.168.137.1:8000/api/v1/users/login/") // нужон редакт
+            .post(multipartBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("Ошибка отправки POST Login", "${e.message}")
+                callback(false)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    response.body?.string()?.let { responseBody ->
+                        Log.e("Успешный ответ POST Login", responseBody)
+                        val jsonObject = JSONObject(responseBody)
+                        val token = jsonObject.getString("token")
+
+                        CommonData.authToken = token
+                        callback(true)
+                    } ?: run {
+                        callback(false)
+                    }
+                } else {
+                    Log.e("Ошибка ответа POST Login", "${response.code}")
+                    callback(false)
                 }
             }
         })
