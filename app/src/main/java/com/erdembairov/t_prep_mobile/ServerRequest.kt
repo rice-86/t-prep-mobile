@@ -15,16 +15,37 @@ import java.io.IOException
 object ServerRequest {
 
     fun delete_subject(id: String) {
+        val client = OkHttpClient()
 
+        val request = Request.Builder()
+            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${id}/")
+            .delete()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("Ошибка отправки DELETE Subject", "${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    response.body?.string()?.let { responseBody ->
+                        Log.e("Успешный ответ DELETE Subject", responseBody)
+                    }
+                } else {
+                    Log.e("Ошибка ответа DELETE Subject", "${response.code}")
+                }
+            }
+        })
     }
 
-    // нужон редакт, он отключен в MainActivity
+    // Он отключен в MainActivity
     fun get_Parts(): ArrayList<Part> {
         val parts = ArrayList<Part>()
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${CommonData.openedSubject.id}/") // нужон редакт
+            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${CommonData.openedSubject.id}/")
             .get()
             .build()
 
@@ -38,7 +59,16 @@ object ServerRequest {
                     response.body?.string()?.let { responseBody ->
                         Log.e("Успешный ответ GET Parts", responseBody)
 
+                        val jsonObject = JSONObject(responseBody)
+                        val partsArray = jsonObject.getJSONArray("parts")
 
+                        for (i in 0 until partsArray.length()) {
+                            val partObject = partsArray.getJSONObject(i)
+                            val name = partObject.getString("name")
+                            val id = partObject.getString("id")
+
+                            parts.add(Part(name, id, ArrayList()))
+                        }
                     }
                 } else {
                     Log.e("Ошибка ответа GET Parts", "${response.code}")
@@ -49,13 +79,13 @@ object ServerRequest {
         return parts
     }
 
-    // нужон редакт, он отключен в PartActivity
+    // Он отключен в PartActivity
     fun get_QAs(): ArrayList<QA> {
         val qas = ArrayList<QA>()
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/subjects/${CommonData.openedSubject.id}/") // нужон редакт
+            .url("http://192.168.137.1:8000/api/v1/users/${CommonData.user_id}/parts/${CommonData.openedPart.id}/")
             .get()
             .build()
 
@@ -161,7 +191,7 @@ object ServerRequest {
     }
 
     // Нужен редакт
-    fun post_User(login: String, password: String, callback: (Boolean) -> Unit) {
+    fun post_AddUser(login: String, password: String, callback: (Boolean) -> Unit) {
         val client = OkHttpClient()
 
         val multipartBody = MultipartBody.Builder()

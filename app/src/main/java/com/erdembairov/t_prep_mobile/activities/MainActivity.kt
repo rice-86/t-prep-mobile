@@ -81,9 +81,8 @@ class MainActivity : AppCompatActivity() {
     // Удалить предмет
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteSubject(subject: Subject) {
+        ServerRequest.delete_subject(subject.id)
         CommonData.subjects.remove(subject)
         adapter.notifyDataSetChanged()
-
-        // дополнить функцией пост-запроса на удаление
     }
 }

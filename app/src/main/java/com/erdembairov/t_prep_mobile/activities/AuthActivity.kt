@@ -43,7 +43,7 @@ class AuthActivity : AppCompatActivity() {
                 val hashedPassword = hashString(password)
 
                 // пост запрос на сервер
-                ServerRequest.post_User(hashedLogin, hashedPassword) { isSuccess ->
+                ServerRequest.post_AddUser(hashedLogin, hashedPassword) { isSuccess ->
                     // if (isSuccess) {
                     if (true) {
                         Log.d("Login", "Вход выполнен успешно")
