@@ -1,4 +1,4 @@
-package com.erdembairov.t_prep_mobile.subjectSettings
+package com.erdembairov.t_prep_mobile.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
+import com.erdembairov.t_prep_mobile.dataClasses.Subject
 
 class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
     RecyclerView.Adapter<SubjectsAdapter.SubjectHolder>() {

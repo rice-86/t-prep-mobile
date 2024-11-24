@@ -14,13 +14,14 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerRequest
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.InputStream
 
-class AddSubjectActivity: AppCompatActivity() {
+class AddSubjectActivity : AppCompatActivity() {
     lateinit var myFile: File
 
     lateinit var mainAddSubject: CoordinatorLayout
@@ -44,7 +45,9 @@ class AddSubjectActivity: AppCompatActivity() {
 
         // Кнопка "Выбрать файл"
         chooseFileBt.setOnClickListener {
-            startForResult.launch(Intent().setType("text/plain").setAction(Intent.ACTION_GET_CONTENT))
+            startForResult.launch(
+                Intent().setType("text/plain").setAction(Intent.ACTION_GET_CONTENT)
+            )
         }
 
         // Кнопка "Отмена"
@@ -56,8 +59,16 @@ class AddSubjectActivity: AppCompatActivity() {
         saveSubjectBt.setOnClickListener {
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
                 if (::myFile.isInitialized) {
-                    ServerRequest.post_AddSubject(nameSubjectET.text.toString(), myFile)
-                    finish()
+                    ServerRequest.post_AddSubject(
+                        nameSubjectET.text.toString(),
+                        myFile
+                    ) { isSuccess ->
+                        if (isSuccess) {
+                            runOnUiThread {
+                                finish()
+                            }
+                        }
+                    }
                 } else {
                     snackBarCreate("Вы не выбрали файл", mainAddSubject)
                     Log.e("FileError", "Файл не выбран")
@@ -69,22 +80,23 @@ class AddSubjectActivity: AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val fileUri = result.data?.data
+    val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val fileUri = result.data?.data
 
-            if (fileUri != null) {
-                val file = copyFileToLocal(fileUri)
-                if (file != null) {
-                    myFile = file
-                    chooseFileBt.text = "Выбрать другой файл"
-                    fileNotChoosedTV.text = "Выбран файл: ${getFileName(fileUri)}"
-                } else {
-                    Log.e("FileError", "Не удалось скопировать файл в локальную директорию")
+                if (fileUri != null) {
+                    val file = copyFileToLocal(fileUri)
+                    if (file != null) {
+                        myFile = file
+                        chooseFileBt.text = "Выбрать другой файл"
+                        fileNotChoosedTV.text = "Выбран файл: ${getFileName(fileUri)}"
+                    } else {
+                        Log.e("FileError", "Не удалось скопировать файл в локальную директорию")
+                    }
                 }
             }
         }
-    }
 
     private fun copyFileToLocal(uri: Uri): File? {
         try {

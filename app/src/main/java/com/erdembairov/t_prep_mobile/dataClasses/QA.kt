@@ -1,4 +1,4 @@
-package com.erdembairov.t_prep_mobile.qaSettings
+package com.erdembairov.t_prep_mobile.dataClasses
 
 data class QA(
     val question: String,

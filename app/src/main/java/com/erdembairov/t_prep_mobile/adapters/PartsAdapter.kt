@@ -1,4 +1,4 @@
-package com.erdembairov.t_prep_mobile.partSettings
+package com.erdembairov.t_prep_mobile.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
+import com.erdembairov.t_prep_mobile.dataClasses.Part
 
 class PartsAdapter(private val parts: ArrayList<Part>) :
     RecyclerView.Adapter<PartsAdapter.PartHolder>() {

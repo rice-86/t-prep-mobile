@@ -1,4 +1,4 @@
-package com.erdembairov.t_prep_mobile.qaSettings
+package com.erdembairov.t_prep_mobile.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
+import com.erdembairov.t_prep_mobile.dataClasses.QA
 
 class QAsAdapter(private val qas: ArrayList<QA>) :
     RecyclerView.Adapter<QAsAdapter.QAHolder>() {

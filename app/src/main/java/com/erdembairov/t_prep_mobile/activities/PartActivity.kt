@@ -9,10 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.partSettings.Part
-import com.erdembairov.t_prep_mobile.partSettings.PartsAdapter
+import com.erdembairov.t_prep_mobile.ServerRequest
+import com.erdembairov.t_prep_mobile.dataClasses.Part
+import com.erdembairov.t_prep_mobile.adapters.PartsAdapter
 
-class PartActivity: AppCompatActivity() {
+class PartActivity : AppCompatActivity() {
     lateinit var nameChoosedSubject: TextView
     lateinit var partRV: RecyclerView
     lateinit var adapter: PartsAdapter
@@ -28,12 +29,18 @@ class PartActivity: AppCompatActivity() {
         partRV = findViewById(R.id.partRecyclerView)
         testBt = findViewById(R.id.testButton)
 
-        adapter = PartsAdapter(CommonData.openedSubject.parts)
-        adapter.setOnItemClickListener { position ->
-            showPartDetails(CommonData.openedSubject.parts[position])
-        }
+        ServerRequest.get_Parts { isSuccess ->
+            if (isSuccess) {
+                runOnUiThread {
+                    adapter = PartsAdapter(CommonData.openedSubject.parts)
+                    adapter.setOnItemClickListener { position ->
+                        showPartDetails(CommonData.openedSubject.parts[position])
+                    }
 
-        partRV.adapter = adapter
+                    partRV.adapter = adapter
+                }
+            }
+        }
 
         testBt.setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
@@ -42,8 +49,7 @@ class PartActivity: AppCompatActivity() {
     }
 
     private fun showPartDetails(part: Part) {
-        startActivity(Intent(this, QAActivity::class.java))
         CommonData.openedPart = part
-        // CommonData.openedPart.qas = ServerRequest.get_QAs()
+        startActivity(Intent(this, QAActivity::class.java))
     }
 }

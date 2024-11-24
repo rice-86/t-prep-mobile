@@ -32,7 +32,7 @@ class AuthActivity : AppCompatActivity() {
         loginBt = findViewById(R.id.loginButton)
         registerBt = findViewById(R.id.registerButton)
 
-        // Ой, я случайно написал слушатель для регистрации, баляяяяяя
+        // Ой, я случайно написал слушатель для регистрации
         loginBt.setOnClickListener {
             val login = loginET.text.toString().trim()
             val password = passwordET.text.toString().trim()
@@ -44,8 +44,7 @@ class AuthActivity : AppCompatActivity() {
 
                 // пост запрос на сервер
                 ServerRequest.post_AddUser(hashedLogin, hashedPassword) { isSuccess ->
-                    // if (isSuccess) {
-                    if (true) {
+                    if (isSuccess) {
                         Log.d("Login", "Вход выполнен успешно")
                         val sharedPreferences = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
                         with(sharedPreferences.edit()) {

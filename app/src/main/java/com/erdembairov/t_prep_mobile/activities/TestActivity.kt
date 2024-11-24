@@ -8,34 +8,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.qaSettings.QAsAdapter
+import com.erdembairov.t_prep_mobile.adapters.QAsAdapter
+import com.erdembairov.t_prep_mobile.dataClasses.QA
 
 class TestActivity: AppCompatActivity() {
     lateinit var testSubject: TextView
     lateinit var testRV: RecyclerView
     lateinit var adapter: QAsAdapter
     lateinit var checkBt: Button
-    var checkBtStatus = false
+    lateinit var qasTest: ArrayList<QA>
 
     @SuppressLint("MissingInflatedId", "SetTextI18n", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
-        checkBtStatus = false
-
-        for (i in 0..<CommonData.openedPart.qas.size) {
-            CommonData.openedPart.qas[i].testStatus = true
-        }
+        var checkBtStatus = false
+        qasTest = createTest()
 
         testSubject = findViewById(R.id.testSubjectTextView)
         testSubject.text = "Тест - ${CommonData.openedSubject.name}"
         testRV = findViewById(R.id.testRecyclerView)
         checkBt = findViewById(R.id.checkTestButton)
 
-        adapter = QAsAdapter(CommonData.openedPart.qas)
+        adapter = QAsAdapter(qasTest)
         adapter.setOnItemClickListener { position ->
-            CommonData.openedPart.qas[position].boolArrow = !CommonData.openedPart.qas[position].boolArrow
+            qasTest[position].boolArrow = !qasTest[position].boolArrow
             adapter.notifyDataSetChanged()
         }
 
@@ -43,17 +41,32 @@ class TestActivity: AppCompatActivity() {
 
         checkBt.setOnClickListener {
             if (!checkBtStatus) {
-                for (i in 0..<CommonData.openedPart.qas.size) {
-                    CommonData.openedPart.qas[i].testStatus = false
-                    adapter.notifyDataSetChanged()
+
+                for (i in 0..<qasTest.size) {
+                    qasTest[i].testStatus = false
                 }
+                adapter.notifyDataSetChanged()
 
                 checkBt.text = "Завершить тест"
-
                 checkBtStatus = true
+
             } else {
                 finish()
             }
         }
+    }
+
+    private fun createTest(): ArrayList<QA> {
+        val qasTest = ArrayList<QA>()
+
+        for (part in CommonData.openedSubject.parts) {
+            val qa = part.qas.get((0..<part.qas.size).random())
+            qa.testStatus = true
+            qa.boolArrow = false
+
+            qasTest.add(qa)
+        }
+
+        return qasTest
     }
 }

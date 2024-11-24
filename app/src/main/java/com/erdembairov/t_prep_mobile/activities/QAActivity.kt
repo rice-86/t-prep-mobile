@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.qaSettings.QAsAdapter
+import com.erdembairov.t_prep_mobile.adapters.QAsAdapter
 
 class QAActivity: AppCompatActivity() {
     lateinit var nameChoosedSubject: TextView
@@ -34,6 +34,9 @@ class QAActivity: AppCompatActivity() {
         qaRV.adapter = adapter
 
         finishBt.setOnClickListener{
+            for (i in 0..<CommonData.openedPart.qas.size) {
+                CommonData.openedPart.qas[i].boolArrow = false
+            }
             finish()
         }
     }

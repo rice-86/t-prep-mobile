@@ -1,6 +1,5 @@
-package com.erdembairov.t_prep_mobile.subjectSettings
+package com.erdembairov.t_prep_mobile.dataClasses
 
-import com.erdembairov.t_prep_mobile.partSettings.Part
 import kotlinx.serialization.Serializable
 
 @Serializable
