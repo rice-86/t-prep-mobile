@@ -1,7 +1,6 @@
 package com.erdembairov.t_prep_mobile.activities
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -9,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.qaSettings.QAsAdapter
+import com.erdembairov.t_prep_mobile.adapters.QAsAdapter
 
 class QAActivity: AppCompatActivity() {
     lateinit var nameChoosedSubject: TextView
@@ -22,20 +21,23 @@ class QAActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qa)
 
-        nameChoosedSubject = findViewById(R.id.nameChoosedSubject)
-        nameChoosedSubject.text = CommonData.openedSubject.name
+        nameChoosedSubject = findViewById(R.id.nameChoosedPartTextView)
+        nameChoosedSubject.text = "${CommonData.openedSubject.name} - ${CommonData.openedPart.name}"
         qaRV = findViewById(R.id.qaRecyclerView)
         finishBt = findViewById(R.id.finishButton)
 
-        adapter = QAsAdapter(CommonData.openedSubject.qas)
+        adapter = QAsAdapter(CommonData.openedPart.qas)
         adapter.setOnItemClickListener { position ->
-            CommonData.openedSubject.qas[position].boolArrow = !CommonData.openedSubject.qas[position].boolArrow
+            CommonData.openedPart.qas[position].boolArrow = !CommonData.openedPart.qas[position].boolArrow
             adapter.notifyDataSetChanged()
         }
         qaRV.adapter = adapter
 
         finishBt.setOnClickListener{
-            startActivity(Intent(this, MainActivity::class.java))
+            for (i in 0..<CommonData.openedPart.qas.size) {
+                CommonData.openedPart.qas[i].boolArrow = false
+            }
+            finish()
         }
     }
 }

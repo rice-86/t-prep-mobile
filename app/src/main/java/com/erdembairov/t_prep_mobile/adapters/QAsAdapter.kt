@@ -1,4 +1,4 @@
-package com.erdembairov.t_prep_mobile.qaSettings
+package com.erdembairov.t_prep_mobile.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,13 +7,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
+import com.erdembairov.t_prep_mobile.dataClasses.QA
 
-class QAsAdapter(private val qas: ArrayList<QA>) : RecyclerView.Adapter<QAsAdapter.QAHolder>() {
+class QAsAdapter(private val qas: ArrayList<QA>) :
+    RecyclerView.Adapter<QAsAdapter.QAHolder>() {
 
     class QAHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var questionView: TextView = itemView.findViewById(R.id.question)
-        var arrowIconView: ImageView = itemView.findViewById(R.id.arrowIcon)
-        var answerView: TextView = itemView.findViewById(R.id.answer)
+        var questionView: TextView = itemView.findViewById(R.id.questionTextView)
+        var arrowIconView: ImageView = itemView.findViewById(R.id.arrowImageView)
+        var answerView: TextView = itemView.findViewById(R.id.answerTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QAHolder {
@@ -40,6 +42,12 @@ class QAsAdapter(private val qas: ArrayList<QA>) : RecyclerView.Adapter<QAsAdapt
         } else {
             holder.answerView.visibility = View.GONE
             holder.arrowIconView.setImageResource(R.drawable.ic_arrow_down)
+        }
+
+        if (qa.testStatus) {
+            holder.arrowIconView.visibility = View.GONE
+        } else {
+            holder.arrowIconView.visibility = View.VISIBLE
         }
     }
 
