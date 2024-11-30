@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.ServerRequest
+import com.erdembairov.t_prep_mobile.ServerSubjectRequest
 import com.erdembairov.t_prep_mobile.dataClasses.Part
 import com.erdembairov.t_prep_mobile.adapters.PartsAdapter
 
@@ -29,7 +29,7 @@ class PartActivity : AppCompatActivity() {
         partRV = findViewById(R.id.partRecyclerView)
         testBt = findViewById(R.id.testButton)
 
-        ServerRequest.get_Parts { isSuccess ->
+        ServerSubjectRequest.get_Parts { isSuccess ->
             if (isSuccess) {
                 runOnUiThread {
                     adapter = PartsAdapter(CommonData.openedSubject.parts)

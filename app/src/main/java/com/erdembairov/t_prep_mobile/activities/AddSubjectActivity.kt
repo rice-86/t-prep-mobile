@@ -14,9 +14,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.ServerRequest
+import com.erdembairov.t_prep_mobile.ServerSubjectRequest
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.InputStream
@@ -45,9 +44,18 @@ class AddSubjectActivity : AppCompatActivity() {
 
         // Кнопка "Выбрать файл"
         chooseFileBt.setOnClickListener {
-            startForResult.launch(
-                Intent().setType("text/plain").setAction(Intent.ACTION_GET_CONTENT)
-            )
+            val intent = Intent().apply {
+                action = Intent.ACTION_GET_CONTENT
+                type = "*/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+                    "image/png", // png
+                    "image/jpeg", // jpeg
+                    "application/pdf", // pdf
+                    "text/plain" // txt
+                ))
+            }
+            startForResult.launch(intent)
         }
 
         // Кнопка "Отмена"
@@ -59,22 +67,31 @@ class AddSubjectActivity : AppCompatActivity() {
         saveSubjectBt.setOnClickListener {
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
                 if (::myFile.isInitialized) {
-                    ServerRequest.post_AddSubject(
+                    ServerSubjectRequest.post_AddSubject(
                         nameSubjectET.text.toString(),
                         myFile
-                    ) { isSuccess ->
+                    ) { isSuccess, answer ->
                         if (isSuccess) {
                             runOnUiThread {
                                 finish()
                             }
+                        } else {
+                            when (answer) {
+                                "400" -> {
+                                    CreateSnackBar("Превышен размер файла", mainAddSubject)
+                                }
+                                "500" -> {
+                                    CreateSnackBar("Ошибка обработки файла", mainAddSubject)
+                                }
+                            }
                         }
                     }
                 } else {
-                    snackBarCreate("Вы не выбрали файл", mainAddSubject)
+                    CreateSnackBar("Вы не выбрали файл", mainAddSubject)
                     Log.e("FileError", "Файл не выбран")
                 }
             } else {
-                snackBarCreate("Вы не задали название предмета", mainAddSubject)
+                CreateSnackBar("Вы не задали название предмета", mainAddSubject)
             }
         }
     }
@@ -118,7 +135,7 @@ class AddSubjectActivity : AppCompatActivity() {
         }
     }
 
-    private fun snackBarCreate(text: String, main: CoordinatorLayout) {
+    private fun CreateSnackBar(text: String, main: CoordinatorLayout) {
         val snackbar = Snackbar.make(main, text, Snackbar.LENGTH_SHORT)
 
         val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams

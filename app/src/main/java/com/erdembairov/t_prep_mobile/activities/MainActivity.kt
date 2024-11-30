@@ -1,18 +1,19 @@
 package com.erdembairov.t_prep_mobile.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.ServerRequest
+import com.erdembairov.t_prep_mobile.ServerSubjectRequest
+import com.erdembairov.t_prep_mobile.ServerUserRequest
+import com.erdembairov.t_prep_mobile.activities.Auth.AuthActivity
 import com.erdembairov.t_prep_mobile.dataClasses.Subject
 import com.erdembairov.t_prep_mobile.adapters.SubjectsAdapter
-import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     var adapter: SubjectsAdapter = SubjectsAdapter(CommonData.subjects)
@@ -25,10 +26,17 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        val storedUserId = sharedPreferences.getString("user_id", null)
+        val storedSessionId = sharedPreferences.getString("session_id", null)
 
         if (!isLoggedIn) {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
+        } else {
+            if (storedUserId != null && storedSessionId != null) {
+                CommonData.user_id = storedUserId
+                CommonData.session_id = storedSessionId
+            }
         }
 
         setContentView(R.layout.activity_main)
@@ -37,9 +45,16 @@ class MainActivity : AppCompatActivity() {
         subjectsRV = findViewById(R.id.subjectsRecyclerView)
 
         // Открыть страницу добавления предмета
-        addSubjectBt.setOnClickListener{ startActivity(Intent(this, AddSubjectActivity::class.java)) }
+        addSubjectBt.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    AddSubjectActivity::class.java
+                )
+            )
+        }
 
-        ServerRequest.get_Subjects { isSuccess ->
+        ServerSubjectRequest.get_Subjects { isSuccess ->
             if (isSuccess) {
                 runOnUiThread {
                     adapter = SubjectsAdapter(CommonData.subjects)
@@ -73,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     // Удалить предмет
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteSubject(subject: Subject) {
-        ServerRequest.delete_subject(subject.id) { isSuccess ->
+        ServerSubjectRequest.delete_Subject(subject.id) { isSuccess ->
             if (isSuccess) {
                 runOnUiThread {
                     CommonData.subjects.remove(subject)

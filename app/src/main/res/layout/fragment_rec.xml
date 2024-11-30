@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainRec"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_20dp"
+            android:text="Восстановить аккаунт"
+            android:textSize="@dimen/defTextSize"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/recLoginEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_16dp"
+            android:hint="Логин"
+            android:maxLength="30" />
+
+        <EditText
+            android:id="@+id/recNewPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:hint="Новый пароль"
+            android:inputType="textPassword"
+            android:maxLength="30" />
+
+        <EditText
+            android:id="@+id/repeatRecNewPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:hint="Повторите пароль"
+            android:inputType="textPassword"
+            android:maxLength="30" />
+
+        <Button
+            android:id="@+id/recButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:layout_marginTop="@dimen/_16dp"
+            android:backgroundTint="@color/tPrepBackColor"
+            android:text="Восстановить"
+            android:textColor="@color/tPrepTextColor"
+            android:textSize="@dimen/defTextSize" />
+
+    </LinearLayout>
+
+</FrameLayout>
