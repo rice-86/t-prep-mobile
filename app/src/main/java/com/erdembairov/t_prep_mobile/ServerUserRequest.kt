@@ -159,7 +159,97 @@ object ServerUserRequest {
         })
     }
 
-    fun post_RecoveryUser(login: String, password: String, callback: (Boolean, String?) -> Unit) {
+    fun post_Recovery1User(login: String, callback: (Boolean, String?) -> Unit) {
+        val client = OkHttpClient()
 
+        val multipartBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("login", login)
+            .build()
+
+        val request = Request.Builder()
+            .url("https://${CommonData.ip}:8000/api/password/reset/request/")
+            .post(multipartBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("Ошибка отправки POST REC1", "${e.message}")
+                callback(false, "${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                when (response.code) {
+                    200 -> {
+                        response.body?.string()?.let { responseBody ->
+                            Log.e("Успешный ответ POST REC1", responseBody)
+
+                            // пум пум пум
+
+                            callback(true, null)
+                        }
+                    }
+                    404 -> {
+                        Log.e("Ошибка ответа POST REC1", "404 Not Found")
+                        callback(false, "404")
+                    }
+                    429 -> {
+                        Log.e("Ошибка ответа POST REC1", "429 Too Many Requests")
+                        callback(false, "429")
+                    }
+                    else -> {
+                        Log.e("Ошибка ответа POST REC1", "${response.code}")
+                        callback(false, "Неизвестная ошибка")
+                    }
+                }
+            }
+        })
+    }
+
+    fun post_Recovery2User(password: String, callback: (Boolean, String?) -> Unit) {
+        val client = OkHttpClient()
+
+        val multipartBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("password", password)
+            .build()
+
+        val request = Request.Builder()
+            .url("https://${CommonData.ip}:8000/api/password/reset/confirm/")
+            .post(multipartBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("Ошибка отправки POST REC2", "${e.message}")
+                callback(false, "${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                when (response.code) {
+                    200 -> {
+                        response.body?.string()?.let { responseBody ->
+                            Log.e("Успешный ответ POST REC2", responseBody)
+
+                            // пум пум пум
+
+                            callback(true, null)
+                        }
+                    }
+                    400 -> {
+                        Log.e("Ошибка ответа POST REC2", "400 Bad Request")
+                        callback(false, "400")
+                    }
+                    429 -> {
+                        Log.e("Ошибка ответа POST REC2", "429 Too Many Requests")
+                        callback(false, "429")
+                    }
+                    else -> {
+                        Log.e("Ошибка ответа POST REC2", "${response.code}")
+                        callback(false, "Неизвестная ошибка")
+                    }
+                }
+            }
+        })
     }
 }
