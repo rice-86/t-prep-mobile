@@ -44,6 +44,10 @@ object ServerUserRequest {
                             callback(true, null, user_id, session_id)
                         }
                     }
+                    400 -> {
+                        Log.e("Ошибка ответа POST REGISTER", "400 Bad Request")
+                        callback(false, "400", null, null)
+                    }
                     409 -> {
                         Log.e("Ошибка ответа POST REGISTER", "409 Conflict")
                         callback(false, "409", null, null)

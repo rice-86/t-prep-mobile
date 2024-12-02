@@ -47,34 +47,29 @@ class RegFragment : Fragment() {
             val repeatPassword = repeatPasswordET.text.toString().trim()
 
             if (validateInputs(login, password, repeatPassword)) {
-                if (isValidPassword(password)) {
-                    val hashedPassword = hashString(password)
+                ServerUserRequest.post_RegisterUser(login, password) { isSuccess, answer, user_id, session_id ->
+                    if (isSuccess) {
+                        val sharedPreferences = requireActivity().getSharedPreferences(
+                            "AuthPrefs",
+                            Context.MODE_PRIVATE
+                        )
 
-                    ServerUserRequest.post_RegisterUser(login, hashedPassword) { isSuccess, answer, user_id, session_id ->
-                        if (isSuccess) {
-                            val sharedPreferences = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE)
-                            with(sharedPreferences.edit()) {
-                                putBoolean("isLoggedIn", true)
-                                putString("user_id", user_id)
-                                putString("session_id", session_id)
-                                apply()
-                            }
+                        with(sharedPreferences.edit()) {
+                            putBoolean("isLoggedIn", true)
+                            putString("user_id", user_id)
+                            putString("session_id", session_id)
+                            apply()
+                        }
 
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                            requireActivity().finish()
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
 
-                        } else {
-                            when (answer) {
-                                "409" -> {
-                                    CreateSnackbar("Логин уже занят")
-                                }
-                                "429" -> {
-                                    CreateSnackbar("Превышен лимит запросов")
-                                }
-                                else -> {
-                                    CreateSnackbar("Неизвестная ошибка")
-                                }
-                            }
+                    } else {
+                        when (answer) {
+                            "400" -> { CreateSnackbar("Пароль не соответсвует критериям") }
+                            "409" -> { CreateSnackbar("Логин уже занят") }
+                            "429" -> { CreateSnackbar("Превышен лимит запросов") }
+                            else -> { CreateSnackbar("Неизвестная ошибка") }
                         }
                     }
                 }
@@ -84,44 +79,21 @@ class RegFragment : Fragment() {
         return view
     }
 
-    private fun isValidPassword(password: String): Boolean {
-        val hasLength = password.length >= 8
-        val hasUpperCase = password.any { it.isUpperCase() }
-        val hasDigit = password.any { it.isDigit() }
-        val hasSpecialChar = password.any { !it.isLetterOrDigit() }
-
-        if (!hasLength) {
-            CreateSnackbar("Минимальная длина пароля 8 символов")
-        }
-        if (!hasUpperCase || !hasDigit || !hasSpecialChar) {
-            CreateSnackbar("Пароль должен содержать минимум одну заглавную букву, одну цифру и один специальный символ")
-        }
-
-        return hasLength && hasUpperCase && hasDigit && hasSpecialChar
-    }
-
     private fun validateInputs(login: String, password: String, repeatPassword: String): Boolean {
         return when {
             login.isEmpty() || password.isEmpty() -> {
                 CreateSnackbar("Вы не указали логин или пароль")
                 false
             }
-
             password != repeatPassword -> {
                 CreateSnackbar("Пароли не совпадают")
                 false
             }
-
             else -> true
         }
     }
 
     private fun CreateSnackbar(message: String) {
         Snackbar.make(main, message, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun hashString(input: String): String {
-        val bytes = MessageDigest.getInstance("SHA-256").digest(input.toByteArray())
-        return bytes.joinToString("") { "%02x".format(it) }
     }
 }

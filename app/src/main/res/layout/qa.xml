@@ -2,6 +2,7 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
@@ -21,7 +22,7 @@
             <TextView
                 android:id="@+id/questionTextView"
                 android:layout_width="345dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="Question"
                 android:textSize="16sp"
@@ -38,14 +39,11 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/answerTextView"
+        <WebView
+            android:id="@+id/answerWebView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginStart="2dp"
-            android:text="Answer"
-            android:textSize="16sp"
+            tools:ignore="WebViewLayout"
             android:visibility="visible" />
 
     </LinearLayout>

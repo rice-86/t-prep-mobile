@@ -1,7 +1,6 @@
 package com.erdembairov.t_prep_mobile.activities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerSubjectRequest
-import com.erdembairov.t_prep_mobile.ServerUserRequest
 import com.erdembairov.t_prep_mobile.activities.Auth.AuthActivity
 import com.erdembairov.t_prep_mobile.dataClasses.Subject
 import com.erdembairov.t_prep_mobile.adapters.SubjectsAdapter
