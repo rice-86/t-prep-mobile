@@ -38,6 +38,17 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="@dimen/_16dp"
+        android:backgroundTint="@color/tPrepBackColor"
+        android:text="Logout"
+        android:textColor="@color/tPrepTextColor"
+        android:textSize="@dimen/defTextSize" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addSubjectButton"
         android:layout_width="wrap_content"

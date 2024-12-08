@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.gms)
 }
 
 android {
     namespace = "com.erdembairov.t_prep_mobile"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.erdembairov.t_prep_mobile"
@@ -36,6 +37,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.commonmark)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
@@ -46,6 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.ktx)
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

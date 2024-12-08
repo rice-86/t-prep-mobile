@@ -42,13 +42,13 @@ class AddSubjectActivity : AppCompatActivity() {
         saveSubjectBt = findViewById(R.id.saveButton)
         cancelBt = findViewById(R.id.cancelButton)
 
-        // Кнопка "Выбрать файл"
         chooseFileBt.setOnClickListener {
             val intent = Intent().apply {
                 action = Intent.ACTION_GET_CONTENT
                 type = "*/*"
                 putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+                    "application/msword", // doc
                     "image/png", // png
                     "image/jpeg", // jpeg
                     "application/pdf", // pdf
@@ -58,40 +58,29 @@ class AddSubjectActivity : AppCompatActivity() {
             startForResult.launch(intent)
         }
 
-        // Кнопка "Отмена"
         cancelBt.setOnClickListener {
             finish()
         }
 
-        // Кнопка "Сохранить"
         saveSubjectBt.setOnClickListener {
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
                 if (::myFile.isInitialized) {
-                    ServerSubjectRequest.post_AddSubject(
-                        nameSubjectET.text.toString(),
-                        myFile
-                    ) { isSuccess, answer ->
+                    ServerSubjectRequest.post_AddSubject(nameSubjectET.text.toString(), myFile) { isSuccess, answer ->
                         if (isSuccess) {
-                            runOnUiThread {
-                                finish()
-                            }
+                            runOnUiThread { finish() }
                         } else {
                             when (answer) {
-                                "400" -> {
-                                    CreateSnackBar("Превышен размер файла", mainAddSubject)
-                                }
-                                "500" -> {
-                                    CreateSnackBar("Ошибка обработки файла", mainAddSubject)
-                                }
+                                "400" -> { LocalCreateSnackBar("Превышен размер файла") }
+                                "500" -> { LocalCreateSnackBar("Ошибка обработки файла") }
                             }
                         }
                     }
                 } else {
-                    CreateSnackBar("Вы не выбрали файл", mainAddSubject)
+                    LocalCreateSnackBar("Вы не выбрали файл")
                     Log.e("FileError", "Файл не выбран")
                 }
             } else {
-                CreateSnackBar("Вы не задали название предмета", mainAddSubject)
+                LocalCreateSnackBar("Вы не задали название предмета")
             }
         }
     }
@@ -135,8 +124,8 @@ class AddSubjectActivity : AppCompatActivity() {
         }
     }
 
-    private fun CreateSnackBar(text: String, main: CoordinatorLayout) {
-        val snackbar = Snackbar.make(main, text, Snackbar.LENGTH_SHORT)
+    private fun LocalCreateSnackBar(text: String) {
+        val snackbar = Snackbar.make(mainAddSubject, text, Snackbar.LENGTH_SHORT)
 
         val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
         params.bottomMargin = 200

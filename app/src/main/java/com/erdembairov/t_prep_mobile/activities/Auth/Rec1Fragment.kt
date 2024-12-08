@@ -8,19 +8,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerUserRequest
-import com.google.android.material.snackbar.Snackbar
-import java.security.MessageDigest
 
 class Rec1Fragment : Fragment() {
 
     lateinit var main: FrameLayout
     lateinit var loginET: EditText
-    lateinit var passwordET: EditText
-    lateinit var repeatPasswordET: TextView
     lateinit var recoveryBt: Button
 
     @SuppressLint("MissingInflatedId")
@@ -46,25 +42,18 @@ class Rec1Fragment : Fragment() {
                     } else {
                         when (answer) {
                             "404" -> {
-                                CreateSnackbar("Пользователь не найден")
-                            }
-                            "429" -> {
-                                CreateSnackbar("Превышен лимит запросов")
+                                CommonFun.CreateSnackbar(main, "Пользователь не найден")
                             } else -> {
-                                CreateSnackbar("Неизвестная ошибка")
+                                CommonFun.CreateSnackbar(main, "Неизвестная ошибка")
                             }
                         }
                     }
                 }
             } else {
-                CreateSnackbar("Вы не указали логин")
+                CommonFun.CreateSnackbar(main, "Вы не указали логин")
             }
         }
 
         return view
-    }
-
-    private fun CreateSnackbar(message: String) {
-        Snackbar.make(main, message, Snackbar.LENGTH_SHORT).show()
     }
 }

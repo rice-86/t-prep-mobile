@@ -12,11 +12,10 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerUserRequest
 import com.erdembairov.t_prep_mobile.activities.MainActivity
-import com.google.android.material.snackbar.Snackbar
-import java.security.MessageDigest
 
 class AuthFragment : Fragment() {
 
@@ -50,14 +49,20 @@ class AuthFragment : Fragment() {
             val login = loginET.text.toString().trim()
             val password = passwordET.text.toString().trim()
 
-            if (validateInputs(login, password)) {
-                val hashedPassword = hashString(password)
-
-                ServerUserRequest.post_AuthUser(login, hashedPassword) { isSuccess, answer, user_id, session_id ->
+            if (isValidateInputs(login, password)) {
+                ServerUserRequest.get_AuthUser(login, password) { isSuccess, answer, user_id, session_id ->
                     if (isSuccess) {
-                        val sharedPreferences = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE)
+
+                        val FCM_token = CommonFun.CreateFCMToken()
+
+                        val sharedPreferences = requireActivity().getSharedPreferences(
+                            "AuthPrefs",
+                            Context.MODE_PRIVATE
+                        )
+
                         with(sharedPreferences.edit()) {
                             putBoolean("isLoggedIn", true)
+                            putString("FCM_token", FCM_token)
                             putString("user_id", user_id)
                             putString("session_id", session_id)
                             apply()
@@ -68,15 +73,9 @@ class AuthFragment : Fragment() {
 
                     } else {
                         when (answer) {
-                            "404" -> {
-                                CreateSnackbar("Пользователь не найден")
-                            }
-                            "429" -> {
-                                CreateSnackbar("Превышен лимит запросов")
-                            }
-                            else -> {
-                                CreateSnackbar("Неизвестная ошибка")
-                            }
+                            "401" -> { CommonFun.CreateSnackbar(main, "Неверный пароль") }
+                            "404" -> { CommonFun.CreateSnackbar(main, "Пользователь не найден") }
+                            else -> { CommonFun.CreateSnackbar(main, "Неизвестная ошибка") }
                         }
                     }
                 }
@@ -94,22 +93,13 @@ class AuthFragment : Fragment() {
         return view
     }
 
-    private fun validateInputs(login: String, password: String): Boolean {
+    private fun isValidateInputs(login: String, password: String): Boolean {
         return when {
             login.isEmpty() || password.isEmpty() -> {
-                CreateSnackbar("Вы не указали логин или пароль")
+                CommonFun.CreateSnackbar(main, "Вы не указали логин или пароль")
                 false
             }
             else -> true
         }
-    }
-
-    private fun CreateSnackbar(message: String) {
-        Snackbar.make(main, message, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun hashString(input: String): String {
-        val bytes = MessageDigest.getInstance("SHA-256").digest(input.toByteArray())
-        return bytes.joinToString("") { "%02x".format(it) }
     }
 }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,12 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerUserRequest
 import com.erdembairov.t_prep_mobile.activities.MainActivity
 import com.google.android.material.snackbar.Snackbar
-import java.security.MessageDigest
+import com.google.firebase.messaging.FirebaseMessaging
 
 class RegFragment : Fragment() {
 
@@ -46,9 +46,12 @@ class RegFragment : Fragment() {
             val password = passwordET.text.toString().trim()
             val repeatPassword = repeatPasswordET.text.toString().trim()
 
-            if (validateInputs(login, password, repeatPassword)) {
+            if (CommonFun.isValidateInputs(main, login, password, repeatPassword)) {
                 ServerUserRequest.post_RegisterUser(login, password) { isSuccess, answer, user_id, session_id ->
                     if (isSuccess) {
+
+                        val FCM_token = CommonFun.CreateFCMToken()
+
                         val sharedPreferences = requireActivity().getSharedPreferences(
                             "AuthPrefs",
                             Context.MODE_PRIVATE
@@ -56,6 +59,7 @@ class RegFragment : Fragment() {
 
                         with(sharedPreferences.edit()) {
                             putBoolean("isLoggedIn", true)
+                            putString("FCM_token", FCM_token)
                             putString("user_id", user_id)
                             putString("session_id", session_id)
                             apply()
@@ -66,10 +70,9 @@ class RegFragment : Fragment() {
 
                     } else {
                         when (answer) {
-                            "400" -> { CreateSnackbar("Пароль не соответсвует критериям") }
-                            "409" -> { CreateSnackbar("Логин уже занят") }
-                            "429" -> { CreateSnackbar("Превышен лимит запросов") }
-                            else -> { CreateSnackbar("Неизвестная ошибка") }
+                            "400" -> { CommonFun.CreateSnackbar(main, "Пароль не соответствует требованиям") }
+                            "409" -> { CommonFun.CreateSnackbar(main, "Пользователь с таким именем уже существует") }
+                            else -> { CommonFun.CreateSnackbar(main, "Неизвестная ошибка") }
                         }
                     }
                 }
@@ -77,23 +80,5 @@ class RegFragment : Fragment() {
         }
 
         return view
-    }
-
-    private fun validateInputs(login: String, password: String, repeatPassword: String): Boolean {
-        return when {
-            login.isEmpty() || password.isEmpty() -> {
-                CreateSnackbar("Вы не указали логин или пароль")
-                false
-            }
-            password != repeatPassword -> {
-                CreateSnackbar("Пароли не совпадают")
-                false
-            }
-            else -> true
-        }
-    }
-
-    private fun CreateSnackbar(message: String) {
-        Snackbar.make(main, message, Snackbar.LENGTH_SHORT).show()
     }
 }
