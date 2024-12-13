@@ -7,8 +7,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,8 +18,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.ServerRequest
+import com.erdembairov.t_prep_mobile.ServerSubjectRequest
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
 
@@ -30,6 +36,8 @@ class AddSubjectActivity : AppCompatActivity() {
     lateinit var fileNotChoosedTV: TextView
     lateinit var saveSubjectBt: Button
     lateinit var cancelBt: Button
+    lateinit var dimView: View
+    lateinit var progressBar: ProgressBar
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,39 +50,57 @@ class AddSubjectActivity : AppCompatActivity() {
         fileNotChoosedTV = findViewById(R.id.fileNotChoosedTextView)
         saveSubjectBt = findViewById(R.id.saveButton)
         cancelBt = findViewById(R.id.cancelButton)
+        dimView = findViewById(R.id.dimView)
+        progressBar = findViewById(R.id.progressBar)
 
-        // Кнопка "Выбрать файл"
         chooseFileBt.setOnClickListener {
-            startForResult.launch(
-                Intent().setType("text/plain").setAction(Intent.ACTION_GET_CONTENT)
-            )
+            val intent = Intent().apply {
+                action = Intent.ACTION_GET_CONTENT
+                type = "*/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+                    "application/msword", // doc
+                    "image/png", // png
+                    "image/jpeg", // jpeg
+                    "application/pdf", // pdf
+                    "text/plain" // txt
+                ))
+            }
+            startForResult.launch(intent)
         }
 
-        // Кнопка "Отмена"
         cancelBt.setOnClickListener {
             finish()
         }
 
-        // Кнопка "Сохранить"
         saveSubjectBt.setOnClickListener {
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
                 if (::myFile.isInitialized) {
-                    ServerRequest.post_AddSubject(
-                        nameSubjectET.text.toString(),
-                        myFile
-                    ) { isSuccess ->
-                        if (isSuccess) {
-                            runOnUiThread {
+                    dimView.visibility = View.VISIBLE
+                    progressBar.visibility = View.VISIBLE
+
+                    ServerSubjectRequest.post_AddSubject(nameSubjectET.text.toString(), myFile) { isSuccess, answer ->
+                        runOnUiThread {
+                            dimView.visibility = View.GONE
+                            progressBar.visibility = View.GONE
+
+                            if (isSuccess) {
                                 finish()
+                            } else {
+                                when (answer) {
+                                    "400" -> { LocalCreateSnackBar("Превышен размер файла") }
+                                    "500" -> { LocalCreateSnackBar("Ошибка обработки файла") }
+                                }
                             }
                         }
                     }
+
                 } else {
-                    snackBarCreate("Вы не выбрали файл", mainAddSubject)
+                    LocalCreateSnackBar("Вы не выбрали файл")
                     Log.e("FileError", "Файл не выбран")
                 }
             } else {
-                snackBarCreate("Вы не задали название предмета", mainAddSubject)
+                LocalCreateSnackBar("Вы не задали название предмета")
             }
         }
     }
@@ -118,8 +144,8 @@ class AddSubjectActivity : AppCompatActivity() {
         }
     }
 
-    private fun snackBarCreate(text: String, main: CoordinatorLayout) {
-        val snackbar = Snackbar.make(main, text, Snackbar.LENGTH_SHORT)
+    private fun LocalCreateSnackBar(text: String) {
+        val snackbar = Snackbar.make(mainAddSubject, text, Snackbar.LENGTH_SHORT)
 
         val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
         params.bottomMargin = 200

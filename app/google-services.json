@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "78970994091",
+    "project_id": "t-prep-mobile",
+    "storage_bucket": "t-prep-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78970994091:android:776f5da59732b510d8e6ee",
+        "android_client_info": {
+          "package_name": "com.erdembairov.t_prep_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLyk9TPBpGJ52wwlOuwTB6SURtR1_RxTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

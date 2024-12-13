@@ -1,96 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainAddSubject"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/mainAddSubject"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16dp"
-            android:layout_marginTop="@dimen/_20dp"
-            android:text="Укажите название предмета"
-            android:textSize="@dimen/defTextSize" />
-
-        <EditText
-            android:id="@+id/nameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_16dp"
-            android:layout_marginTop="@dimen/_16dp"
-            android:hint="Введите название"
-            android:textSize="@dimen/defTextSize" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_16dp"
-            android:layout_marginTop="@dimen/_16dp"
-            android:text="Выберите файл"
-            android:textSize="@dimen/defTextSize" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="@dimen/_16dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/chooseFileButton"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/lightGrey"
-                android:text="Выбрать файл"
-                android:textColor="@color/grey"
+                android:layout_marginStart="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_20dp"
+                android:text="Укажите название предмета"
+                android:textSize="@dimen/defTextSize" />
+
+            <EditText
+                android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginTop="@dimen/_16dp"
+                android:hint="Введите название"
                 android:textSize="@dimen/defTextSize" />
 
             <TextView
-                android:id="@+id/fileNotChoosedTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
-                android:text="Файл не выбран"
+                android:text="Выберите файл"
                 android:textSize="@dimen/defTextSize" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/_16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/chooseFileButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/lightGrey"
+                    android:text="Выбрать файл"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/defTextSize" />
+
+                <TextView
+                    android:id="@+id/fileNotChoosedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:text="Файл не выбран"
+                    android:textSize="@dimen/defTextSize" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="@dimen/buttonWidth"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/lightGrey"
+                    android:text="Отмена"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/defTextSize" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="@dimen/buttonWidth"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/tPrepBackColor"
+                    android:text="Сохранить"
+                    android:textColor="@color/tPrepTextColor"
+                    android:textSize="@dimen/defTextSize" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_16dp"
-            android:orientation="horizontal">
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="@dimen/buttonWidth"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/lightGrey"
-                android:text="Отмена"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/defTextSize" />
+    <View
+        android:id="@+id/dimView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#30000000"
+        android:visibility="gone" />
 
-            <Button
-                android:id="@+id/saveButton"
-                android:layout_width="@dimen/buttonWidth"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/tPrepBackColor"
-                android:text="Сохранить"
-                android:textColor="@color/tPrepTextColor"
-                android:textSize="@dimen/defTextSize" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

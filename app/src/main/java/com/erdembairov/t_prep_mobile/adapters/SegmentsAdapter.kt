@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.dataClasses.Part
+import com.erdembairov.t_prep_mobile.dataClasses.Segment
 
-class PartsAdapter(private val parts: ArrayList<Part>) :
-    RecyclerView.Adapter<PartsAdapter.PartHolder>() {
+class SegmentsAdapter(private val segments: ArrayList<Segment>) :
+    RecyclerView.Adapter<SegmentsAdapter.PartHolder>() {
 
     class PartHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mainPartView: CardView = itemView.findViewById(R.id.mainPart)
@@ -23,11 +23,11 @@ class PartsAdapter(private val parts: ArrayList<Part>) :
     }
 
     override fun getItemCount(): Int {
-        return parts.size
+        return segments.size
     }
 
     override fun onBindViewHolder(holder: PartHolder, position: Int) {
-        val part = parts[position]
+        val part = segments[position]
         holder.nameView.text = part.name
 
         holder.mainPartView.setOnClickListener {

@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Subject(
     val name: String,
     val id: String,
-    var parts: ArrayList<Part>
+    var segments: ArrayList<Segment>
 )

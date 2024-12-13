@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.gms)
 }
 
 android {
     namespace = "com.erdembairov.t_prep_mobile"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.erdembairov.t_prep_mobile"
@@ -36,12 +37,11 @@ android {
 }
 
 dependencies {
-//    implementation(libs.io.ktor.ktor.client.core3)
-//    implementation(libs.ktor.client.android)
-//    implementation(libs.ktor.client.json)
-//    implementation(libs.ktor.client.serialization)
-//    implementation(libs.ktor.client.logging)
-
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.commonmark)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)

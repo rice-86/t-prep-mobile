@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
+import com.erdembairov.t_prep_mobile.ServerSubjectRequest
 import com.erdembairov.t_prep_mobile.adapters.QAsAdapter
 
 class QAActivity: AppCompatActivity() {
@@ -21,23 +22,49 @@ class QAActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qa)
 
+        for (i in 0..<CommonData.openedSegment.qas.size) {
+            CommonData.openedSegment.qas[i].boolArrow = false
+            CommonData.openedSegment.qas[i].testStatus = false
+        }
+
         nameChoosedSubject = findViewById(R.id.nameChoosedPartTextView)
-        nameChoosedSubject.text = "${CommonData.openedSubject.name} - ${CommonData.openedPart.name}"
+        nameChoosedSubject.text = "${CommonData.openedSubject.name} - ${CommonData.openedSegment.name}"
         qaRV = findViewById(R.id.qaRecyclerView)
         finishBt = findViewById(R.id.finishButton)
 
-        adapter = QAsAdapter(CommonData.openedPart.qas)
+        adapter = QAsAdapter(CommonData.openedSegment.qas)
         adapter.setOnItemClickListener { position ->
-            CommonData.openedPart.qas[position].boolArrow = !CommonData.openedPart.qas[position].boolArrow
+            CommonData.openedSegment.qas[position].boolArrow = !CommonData.openedSegment.qas[position].boolArrow
             adapter.notifyDataSetChanged()
         }
+
+        adapter.setOnSaveButtonClickListener { position ->
+            ServerSubjectRequest.patch_EditAnswer(
+                CommonData.openedSegment.qas[position].question,
+                CommonData.openedSegment.qas[position].answer,
+                CommonData.openedSegment.id
+            ) { isSuccess ->
+                if (isSuccess) {
+                    runOnUiThread {
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
         qaRV.adapter = adapter
 
         finishBt.setOnClickListener{
-            for (i in 0..<CommonData.openedPart.qas.size) {
-                CommonData.openedPart.qas[i].boolArrow = false
+            ServerSubjectRequest.put_UpdateSegmentStatus(CommonData.openedSegment.id) { isSuccess ->
+                if (isSuccess) {
+                    for (i in 0..<CommonData.openedSegment.qas.size) {
+                        CommonData.openedSegment.qas[i].boolArrow = false
+                        CommonData.openedSegment.qas[i].testStatus = false
+                    }
+
+                    finish()
+                }
             }
-            finish()
         }
     }
 }

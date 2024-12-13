@@ -59,8 +59,8 @@ class TestActivity: AppCompatActivity() {
     private fun createTest(): ArrayList<QA> {
         val qasTest = ArrayList<QA>()
 
-        for (part in CommonData.openedSubject.parts) {
-            val qa = part.qas.get((0..<part.qas.size).random())
+        for (segment in CommonData.openedSubject.segments) {
+            val qa = segment.qas.get((0..<segment.qas.size).random())
             qa.testStatus = true
             qa.boolArrow = false
 

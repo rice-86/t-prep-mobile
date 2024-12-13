@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +20,7 @@
         android:theme="@style/Theme.Tprepmobile"
         tools:targetApi="31">
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.Main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +30,18 @@
         </activity>
         <activity android:name=".activities.AddSubjectActivity" />
         <activity android:name=".activities.QAActivity" />
-        <activity android:name=".activities.PartActivity" />
+        <activity android:name=".activities.SegmentActivity" />
         <activity android:name=".activities.TestActivity" />
-        <activity android:name=".activities.AuthActivity" />
+        <activity android:name=".activities.Auth.AuthActivity" />
+
+        <service
+            android:name=".MyFirebaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

@@ -9,14 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
-import com.erdembairov.t_prep_mobile.ServerRequest
-import com.erdembairov.t_prep_mobile.dataClasses.Part
-import com.erdembairov.t_prep_mobile.adapters.PartsAdapter
+import com.erdembairov.t_prep_mobile.ServerSubjectRequest
+import com.erdembairov.t_prep_mobile.adapters.SegmentsAdapter
 
-class PartActivity : AppCompatActivity() {
+class SegmentActivity : AppCompatActivity() {
     lateinit var nameChoosedSubject: TextView
     lateinit var partRV: RecyclerView
-    lateinit var adapter: PartsAdapter
+    lateinit var adapter: SegmentsAdapter
     lateinit var testBt: Button
 
     @SuppressLint("MissingInflatedId")
@@ -29,12 +28,13 @@ class PartActivity : AppCompatActivity() {
         partRV = findViewById(R.id.partRecyclerView)
         testBt = findViewById(R.id.testButton)
 
-        ServerRequest.get_Parts { isSuccess ->
+        ServerSubjectRequest.get_Segments { isSuccess ->
             if (isSuccess) {
                 runOnUiThread {
-                    adapter = PartsAdapter(CommonData.openedSubject.parts)
+                    adapter = SegmentsAdapter(CommonData.openedSubject.segments)
                     adapter.setOnItemClickListener { position ->
-                        showPartDetails(CommonData.openedSubject.parts[position])
+                        CommonData.openedSegment = CommonData.openedSubject.segments[position]
+                        startActivity(Intent(this, QAActivity::class.java).putExtra("position", position))
                     }
 
                     partRV.adapter = adapter
@@ -44,12 +44,6 @@ class PartActivity : AppCompatActivity() {
 
         testBt.setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
-            CommonData.openedPart = CommonData.openedSubject.parts[0]
         }
-    }
-
-    private fun showPartDetails(part: Part) {
-        CommonData.openedPart = part
-        startActivity(Intent(this, QAActivity::class.java))
     }
 }
