@@ -15,8 +15,7 @@ import androidx.fragment.app.Fragment
 import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerUserRequest
-import com.erdembairov.t_prep_mobile.activities.MainActivity
-import com.google.android.material.snackbar.Snackbar
+import com.erdembairov.t_prep_mobile.activities.Main.MainActivity
 import com.google.firebase.messaging.FirebaseMessaging
 
 class RegFragment : Fragment() {
@@ -47,26 +46,38 @@ class RegFragment : Fragment() {
             val repeatPassword = repeatPasswordET.text.toString().trim()
 
             if (CommonFun.isValidateInputs(main, login, password, repeatPassword)) {
-                ServerUserRequest.post_RegisterUser(login, password) { isSuccess, answer, user_id, session_id ->
+                ServerUserRequest.post_RegisterUser(login, password) { isSuccess, answer, user_id, user_name ->
                     if (isSuccess) {
 
-                        val FCM_token = CommonFun.CreateFCMToken()
+                        FirebaseMessaging.getInstance().getToken().addOnCompleteListener { tokenTask ->
+                            if (tokenTask.isSuccessful) {
+                                val token  = tokenTask.result
 
-                        val sharedPreferences = requireActivity().getSharedPreferences(
-                            "AuthPrefs",
-                            Context.MODE_PRIVATE
-                        )
+                                /*
+                                ServerUserRequest.put_FCMToken(token) { isSuccessToken ->
+                                    if (isSuccessToken) {
+                                        // емае
+                                    }
+                                }
+                                 */
 
-                        with(sharedPreferences.edit()) {
-                            putBoolean("isLoggedIn", true)
-                            putString("FCM_token", FCM_token)
-                            putString("user_id", user_id)
-                            putString("session_id", session_id)
-                            apply()
+                                val sharedPreferences = requireActivity().getSharedPreferences(
+                                    "AuthPrefs",
+                                    Context.MODE_PRIVATE
+                                )
+
+                                with(sharedPreferences.edit()) {
+                                    putBoolean("isLoggedIn", true)
+                                    putString("FCM_token", token)
+                                    putString("user_id", user_id)
+                                    putString("user_name", user_name)
+                                    apply()
+                                }
+
+                                startActivity(Intent(requireContext(), MainActivity::class.java))
+                                requireActivity().finish()
+                            }
                         }
-
-                        startActivity(Intent(requireContext(), MainActivity::class.java))
-                        requireActivity().finish()
 
                     } else {
                         when (answer) {

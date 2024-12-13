@@ -22,6 +22,11 @@ class QAActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qa)
 
+        for (i in 0..<CommonData.openedSegment.qas.size) {
+            CommonData.openedSegment.qas[i].boolArrow = false
+            CommonData.openedSegment.qas[i].testStatus = false
+        }
+
         nameChoosedSubject = findViewById(R.id.nameChoosedPartTextView)
         nameChoosedSubject.text = "${CommonData.openedSubject.name} - ${CommonData.openedSegment.name}"
         qaRV = findViewById(R.id.qaRecyclerView)
@@ -32,6 +37,21 @@ class QAActivity: AppCompatActivity() {
             CommonData.openedSegment.qas[position].boolArrow = !CommonData.openedSegment.qas[position].boolArrow
             adapter.notifyDataSetChanged()
         }
+
+        adapter.setOnSaveButtonClickListener { position ->
+            ServerSubjectRequest.patch_EditAnswer(
+                CommonData.openedSegment.qas[position].question,
+                CommonData.openedSegment.qas[position].answer,
+                CommonData.openedSegment.id
+            ) { isSuccess ->
+                if (isSuccess) {
+                    runOnUiThread {
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
         qaRV.adapter = adapter
 
         finishBt.setOnClickListener{
@@ -39,6 +59,7 @@ class QAActivity: AppCompatActivity() {
                 if (isSuccess) {
                     for (i in 0..<CommonData.openedSegment.qas.size) {
                         CommonData.openedSegment.qas[i].boolArrow = false
+                        CommonData.openedSegment.qas[i].testStatus = false
                     }
 
                     finish()

@@ -148,7 +148,7 @@ object ServerSubjectRequest {
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://${CommonData.ip}:8000/api/v1/users/subjects/${CommonData.openedSubject.id}/segments")
+            .url("http://${CommonData.ip}:8000/api/v1/users/subjects/${CommonData.openedSubject.id}/segments/")
             .get()
             .build()
 
@@ -209,22 +209,53 @@ object ServerSubjectRequest {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("Ошибка отправки POST UpdateSS", "${e.message}")
+                Log.e("Ошибка отправки PUT UpdateSS", "${e.message}")
                 callback(false)
             }
 
             override fun onResponse(call: Call, response: Response) {
-                when (response.code) {
-                    200 -> {
-                        response.body?.string()?.let { responseBody ->
-                            Log.e("Успешный ответ POST UpdateSS", responseBody)
-                            callback(true)
-                        }
+                if (response.isSuccessful) {
+                    response.body?.string()?.let { responseBody ->
+                        Log.e("Успешный ответ PUT UpdateSS", responseBody)
+                        callback(true)
                     }
-                    else -> {
-                        Log.e("Ошибка ответа POST UpdateSS", "${response.code}")
-                        callback(false)
+                } else {
+                    Log.e("Ошибка ответа PUT UpdateSS", "${response.code}")
+                    callback(false)
+                }
+            }
+        })
+    }
+
+    fun patch_EditAnswer(question: String, answer: String, id: String, callback: (Boolean) -> Unit) {
+        val client = OkHttpClient()
+
+        val multipartBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("question", question)
+            .addFormDataPart("answer", answer)
+            .build()
+
+        val request = Request.Builder()
+            .url("http://${CommonData.ip}:8000/api/v1/users/segments/$id/change-answer/")
+            .patch(multipartBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("Ошибка отправки PATCH EditAnswer", "${e.message}")
+                callback(false)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    response.body?.string()?.let { responseBody ->
+                        Log.e("Успешный ответ PATCH EditAnswer", responseBody)
+                        callback(true)
                     }
+                } else {
+                    Log.e("Ошибка ответа PATCH EditAnswer", "${response.code}")
+                    callback(false)
                 }
             }
         })

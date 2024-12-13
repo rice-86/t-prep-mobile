@@ -41,9 +41,9 @@ object ServerUserRequest {
 
                             val jsonObject = JSONObject(responseBody)
                             val user_id = jsonObject.getString("id")
-                            val session_id = "1" // jsonObject.getString("session_id")
+                            val user_name = jsonObject.getString("login")
 
-                            callback(true, null, user_id, session_id)
+                            callback(true, null, user_id, user_name)
                         }
                     }
                     400 -> {
@@ -67,7 +67,7 @@ object ServerUserRequest {
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://${CommonData.ip}:8000/api/v1/users/auth/$login/$password")
+            .url("http://${CommonData.ip}:8000/api/v1/users/auth/$login/$password/")
             .get()
             .build()
 
@@ -84,9 +84,9 @@ object ServerUserRequest {
                             Log.e("Успешный ответ POST AUTH", responseBody)
                             val jsonObject = JSONObject(responseBody)
                             val user_id = jsonObject.getString("id")
-                            val session_id = "1" // jsonObject.getString("session_id")
+                            val user_name = jsonObject.getString("login")
 
-                            callback(true, null, user_id, session_id)
+                            callback(true, null, user_id, user_name)
                         }
                     }
                     401 -> {
@@ -101,6 +101,39 @@ object ServerUserRequest {
                         Log.e("Ошибка ответа POST AUTH", "${response.code}")
                         callback(false, "Неизвестная ошибка", null, null)
                     }
+                }
+            }
+        })
+    }
+
+    fun put_FCMToken(token: String, callback: (Boolean) -> Unit) {
+        val client = OkHttpClient()
+
+        val multipartBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("FCM_token", token) // change it
+            .build()
+
+        val request = Request.Builder()
+            .url("http://${CommonData.ip}:8000/api/v1/users/token/") // change it
+            .put(multipartBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("Ошибка отправки POST UpdateSS", "${e.message}")
+                callback(false)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    response.body?.string()?.let { responseBody ->
+                        Log.e("Успешный ответ POST UpdateSS", responseBody)
+                        callback(true)
+                    }
+                } else {
+                    Log.e("Ошибка ответа POST UpdateSS", "${response.code}")
+                    callback(false)
                 }
             }
         })

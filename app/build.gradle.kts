@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.messaging)
     implementation(libs.firebase.inappmessaging.display)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.bom))
@@ -50,7 +51,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.ktx)
     implementation(libs.firebase.crashlytics.buildtools)
-    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

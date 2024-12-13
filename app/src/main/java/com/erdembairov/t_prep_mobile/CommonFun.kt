@@ -2,10 +2,10 @@ package com.erdembairov.t_prep_mobile
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.messaging.FirebaseMessaging
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 
 object CommonFun {
-
     fun CreateSnackbar(main: View, message: String) {
         Snackbar.make(main, message, Snackbar.LENGTH_SHORT).show()
     }
@@ -24,18 +24,33 @@ object CommonFun {
         }
     }
 
-    fun CreateFCMToken() : String {
-        var FCM_token: String = null.toString()
+    fun convertMarkdownToHtml(markdown: String): String {
+        val parser = Parser.builder().build()
+        val document = parser.parse(markdown)
+        val renderer = HtmlRenderer.builder().build()
+        val htmlContent = renderer.render(document)
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { tokenTask ->
-            if (tokenTask.isSuccessful) {
-                val token = tokenTask.result
-                if (token != null) {
-                    FCM_token = token
-                }
-            }
-        }
+        val htmlTemplate = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+                <style>
+                    body { font-family: sans-serif; line-height: 1.5; padding: 0px; }
+                    .MathJax { font-size: 1.2em; }
+                </style>
+            </head>
+            <body>
+                <div id="content">
+                    $htmlContent
+                </div>
+                <script>
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("content")]);
+                </script>
+            </body>
+            </html>
+        """.trimIndent()
 
-        return FCM_token
+        return htmlTemplate
     }
 }

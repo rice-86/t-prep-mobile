@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.erdembairov.t_prep_mobile.CommonData
+import com.erdembairov.t_prep_mobile.CommonFun
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 import com.erdembairov.t_prep_mobile.R
@@ -20,6 +24,9 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
         var questionView: TextView = itemView.findViewById(R.id.questionTextView)
         var arrowIconView: ImageView = itemView.findViewById(R.id.arrowImageView)
         var answerWebView: WebView = itemView.findViewById(R.id.answerWebView)
+        var editAnswerBt: Button = itemView.findViewById(R.id.editAnswerButton)
+        var editAnswerET: EditText = itemView.findViewById(R.id.editAnswerEditText)
+        var saveChangesBt: Button = itemView.findViewById(R.id.saveChangesButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QAHolder {
@@ -31,22 +38,44 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
         return qas.size
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: QAHolder, position: Int) {
         val qa = qas[position]
         holder.questionView.text = qa.question
 
         holder.answerWebView.settings.javaScriptEnabled = true
-        holder.answerWebView.loadDataWithBaseURL(null, convertMarkdownToHtml(qa.answer.trimIndent()), "text/html", "UTF-8", null)
+        holder.answerWebView.loadDataWithBaseURL(null,
+            CommonFun.convertMarkdownToHtml(qa.answer.trimIndent()), "text/html", "UTF-8", null)
 
         holder.arrowIconView.setOnClickListener{
             onItemClickListener?.invoke(position)
         }
 
+        holder.editAnswerBt.setOnClickListener {
+            holder.answerWebView.visibility = View.GONE
+            holder.editAnswerBt.visibility = View.GONE
+            holder.editAnswerET.setText(qa.answer)
+            holder.editAnswerET.visibility = View.VISIBLE
+            holder.saveChangesBt.visibility = View.VISIBLE
+        }
+
+        holder.saveChangesBt.setOnClickListener {
+            CommonData.openedSegment.qas[position].answer = holder.editAnswerET.text.toString()
+
+            holder.answerWebView.visibility = View.VISIBLE
+            holder.editAnswerBt.visibility = View.VISIBLE
+            holder.editAnswerET.visibility = View.GONE
+            holder.saveChangesBt.visibility = View.GONE
+
+            onSaveButtonClickListener?.invoke(position)
+        }
+
         if (qa.boolArrow) {
+            holder.editAnswerBt.visibility = View.VISIBLE
             holder.answerWebView.visibility = View.VISIBLE
             holder.arrowIconView.setImageResource(R.drawable.ic_arrow_up)
         } else {
+            holder.editAnswerBt.visibility = View.GONE
             holder.answerWebView.visibility = View.GONE
             holder.arrowIconView.setImageResource(R.drawable.ic_arrow_down)
         }
@@ -55,35 +84,8 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
     }
 
     private var onItemClickListener: ((Int) -> Unit)? = null
+    private var onSaveButtonClickListener: ((Int) -> Unit)? = null
+
     fun setOnItemClickListener(listener: (Int) -> Unit) { onItemClickListener = listener }
-
-    private fun convertMarkdownToHtml(markdown: String): String {
-        val parser = Parser.builder().build()
-        val document = parser.parse(markdown)
-        val renderer = HtmlRenderer.builder().build()
-        val htmlContent = renderer.render(document)
-
-        val htmlTemplate = """
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-                <style>
-                    body { font-family: sans-serif; line-height: 1.5; padding: 0px; }
-                    .MathJax { font-size: 1.2em; }
-                </style>
-            </head>
-            <body>
-                <div id="content">
-                    $htmlContent
-                </div>
-                <script>
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("content")]);
-                </script>
-            </body>
-            </html>
-        """.trimIndent()
-
-        return htmlTemplate
-    }
+    fun setOnSaveButtonClickListener(listener: (Int) -> Unit) { onSaveButtonClickListener = listener }
 }
