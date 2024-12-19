@@ -22,6 +22,7 @@ class QAActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qa)
 
+        // Обнуляем все статусы вопроса для корректного отображения
         for (i in 0..<CommonData.openedSegment.qas.size) {
             CommonData.openedSegment.qas[i].boolArrow = false
             CommonData.openedSegment.qas[i].testStatus = false
@@ -33,12 +34,17 @@ class QAActivity: AppCompatActivity() {
         finishBt = findViewById(R.id.finishButton)
 
         adapter = QAsAdapter(CommonData.openedSegment.qas)
-        adapter.setOnItemClickListener { position ->
+
+        // Слушатель нажатия на стрелку для вскрытия ответа и кнопки редактирования ответа
+        adapter.setOnArrowClickListener { position ->
             CommonData.openedSegment.qas[position].boolArrow = !CommonData.openedSegment.qas[position].boolArrow
             adapter.notifyDataSetChanged()
         }
 
+        // Слушатель для сохранения изменения ответа
         adapter.setOnSaveButtonClickListener { position ->
+
+            // Запрос на сервер для отправки обновленного ответа
             ServerSubjectRequest.patch_EditAnswer(
                 CommonData.openedSegment.qas[position].question,
                 CommonData.openedSegment.qas[position].answer,
@@ -54,7 +60,10 @@ class QAActivity: AppCompatActivity() {
 
         qaRV.adapter = adapter
 
+        // Слушатель нажатия на кнопку завершения повторения
         finishBt.setOnClickListener{
+
+            // Запрос на сервер для обновления статуса текущей части для того, чтобы определить следующее время для уведомления
             ServerSubjectRequest.put_UpdateSegmentStatus(CommonData.openedSegment.id) { isSuccess ->
                 if (isSuccess) {
                     for (i in 0..<CommonData.openedSegment.qas.size) {

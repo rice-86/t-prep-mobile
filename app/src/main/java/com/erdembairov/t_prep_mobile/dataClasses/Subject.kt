@@ -1,8 +1,6 @@
 package com.erdembairov.t_prep_mobile.dataClasses
 
-import kotlinx.serialization.Serializable
-
-@Serializable
+// Класс для предмета
 data class Subject(
     val name: String,
     val id: String,

@@ -38,6 +38,7 @@ class AuthFragment : Fragment() {
         loginBt = view.findViewById(R.id.loginButton)
         registerBt = view.findViewById(R.id.registerButton)
 
+        // Слушатель нажатия на кнопку для восстановления аккаунта - пока не актуально
         forgetPassTV.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -46,41 +47,49 @@ class AuthFragment : Fragment() {
                 .commit()
         }
 
+        // Слушатель нажатия на кнопку авторизации
         loginBt.setOnClickListener {
+            // Получаем значения полей и избавляемся от пробелов
             val login = loginET.text.toString().trim()
             val password = passwordET.text.toString().trim()
 
-            if (isValidateInputs(login, password)) {
+            // Проверка валидности ввода
+            if (CommonFun.isValidateInputsAuth(main, login, password)) {
+
+                // Запрос на сервер на авторизацию
                 ServerUserRequest.get_AuthUser(login, password) { isSuccess, answer, user_id, user_name ->
                     if (isSuccess) {
 
+                        // Запрос к Firebase для получения индивидуального токена устройства
                         FirebaseMessaging.getInstance().getToken().addOnCompleteListener { tokenTask ->
                             if (tokenTask.isSuccessful) {
+                                // Вот сам токен
                                 val token  = tokenTask.result
 
-                                /*
-                                ServerUserRequest.put_FCMToken(token) { isSuccessToken ->
-                                    if (isSuccessToken) {
-                                        // емае
+                                if (user_id != null) {
+
+                                    // Запрос на сервер для отправки токена
+                                    ServerUserRequest.post_FCMToken(token, user_id) { isSuccessToken ->
+                                        if (isSuccessToken) {
+                                            val sharedPreferences = requireActivity().getSharedPreferences(
+                                                "AuthPrefs",
+                                                Context.MODE_PRIVATE
+                                            )
+
+                                            // Сохранения общих данных пользователя
+                                            with(sharedPreferences.edit()) {
+                                                putBoolean("isLoggedIn", true)
+                                                putString("FCM_token", token)
+                                                putString("user_id", user_id)
+                                                putString("user_name", user_name)
+                                                apply()
+                                            }
+
+                                            startActivity(Intent(requireContext(), MainActivity::class.java))
+                                            requireActivity().finish()
+                                        }
                                     }
                                 }
-                                 */
-
-                                val sharedPreferences = requireActivity().getSharedPreferences(
-                                    "AuthPrefs",
-                                    Context.MODE_PRIVATE
-                                )
-
-                                with(sharedPreferences.edit()) {
-                                    putBoolean("isLoggedIn", true)
-                                    putString("FCM_token", token)
-                                    putString("user_id", user_id)
-                                    putString("user_name", user_name)
-                                    apply()
-                                }
-
-                                startActivity(Intent(requireContext(), MainActivity::class.java))
-                                requireActivity().finish()
                             }
                         }
 
@@ -95,6 +104,7 @@ class AuthFragment : Fragment() {
             }
         }
 
+        // Слушатель кнопки регистрации и перехода на другую страницу
         registerBt.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -104,15 +114,5 @@ class AuthFragment : Fragment() {
         }
 
         return view
-    }
-
-    private fun isValidateInputs(login: String, password: String): Boolean {
-        return when {
-            login.isEmpty() || password.isEmpty() -> {
-                CommonFun.CreateSnackbar(main, "Вы не указали логин или пароль")
-                false
-            }
-            else -> true
-        }
     }
 }

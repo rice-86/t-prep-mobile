@@ -6,11 +6,23 @@ import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 
 object CommonFun {
+
+    // Всплывающее мини-уведомления во время использования приложения
     fun CreateSnackbar(main: View, message: String) {
         Snackbar.make(main, message, Snackbar.LENGTH_SHORT).show()
     }
 
-    fun isValidateInputs(main: View, login: String, password: String, repeatPassword: String): Boolean {
+    fun isValidateInputsAuth(main: View, login: String, password: String): Boolean {
+        return when {
+            login.isEmpty() || password.isEmpty() -> {
+                CreateSnackbar(main, "Вы не указали логин или пароль")
+                false
+            }
+            else -> true
+        }
+    }
+
+    fun isValidateInputsRegister(main: View, login: String, password: String, repeatPassword: String): Boolean {
         return when {
             login.isEmpty() || password.isEmpty() -> {
                 CreateSnackbar(main, "Вы не указали логин или пароль")
@@ -24,6 +36,7 @@ object CommonFun {
         }
     }
 
+    // MarkDown
     fun convertMarkdownToHtml(markdown: String): String {
         val parser = Parser.builder().build()
         val document = parser.parse(markdown)
