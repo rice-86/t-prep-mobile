@@ -31,9 +31,13 @@ class ProfileFragment : Fragment() {
 
         yourUserName.setText("Ваш логин: ${CommonData.user_name}")
 
+        // Слушатель нажатия на кнопку выйти из аккаунта
         logoutButton.setOnClickListener {
+
+            // Запрос на сервер для выхода из сессии
             ServerUserRequest.post_LogoutUser { isSuccess, answer ->
                 if (isSuccess) {
+                    // Очищаем условное внутреннее хранилище приложения
                     sharedPreferences.edit().clear().apply()
 
                     startActivity(Intent(requireContext(), AuthActivity::class.java))

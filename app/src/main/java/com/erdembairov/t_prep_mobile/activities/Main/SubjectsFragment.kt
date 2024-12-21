@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
@@ -27,18 +26,25 @@ class SubjectsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_subjects, container, false)
 
+        // Отправляем запрос на сервер для получения предметов пользователя
         ServerSubjectRequest.get_Subjects { isSuccess ->
+            // Проверяем успешен ли запрос
             if (isSuccess) {
                 requireActivity().runOnUiThread {
+                    // Обновляем Adapter для отображения списка предметов
                     adapter = SubjectsAdapter(CommonData.subjects)
 
+                    // Слушатель нажатия на переход на страницу предмета
                     adapter.setOnItemClickListener { position ->
                         CommonData.openedSubject = CommonData.subjects[position]
                         startActivity(Intent(requireContext(), SegmentActivity::class.java))
                     }
+
+                    // Слушатель нажатия для удаления предмета
                     adapter.setOnDeleteClickListener { position ->
                         val subject = CommonData.subjects[position]
 
+                        // Запрос на сервер для удаления из БД
                         ServerSubjectRequest.delete_Subject(subject.id) { isSuccess ->
                             if (isSuccess) {
                                 requireActivity().runOnUiThread {

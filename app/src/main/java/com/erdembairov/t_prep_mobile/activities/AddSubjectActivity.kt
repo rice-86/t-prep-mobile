@@ -16,14 +16,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerSubjectRequest
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
 
@@ -53,10 +48,13 @@ class AddSubjectActivity : AppCompatActivity() {
         dimView = findViewById(R.id.dimView)
         progressBar = findViewById(R.id.progressBar)
 
+        // Слушатель нажатия на кнопку выбора файла
         chooseFileBt.setOnClickListener {
             val intent = Intent().apply {
                 action = Intent.ACTION_GET_CONTENT
                 type = "*/*"
+
+                // Устанавливаем разрешенные форматы файлов
                 putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
                     "application/msword", // doc
@@ -69,16 +67,21 @@ class AddSubjectActivity : AppCompatActivity() {
             startForResult.launch(intent)
         }
 
+        // Отмена добавления нового предмета и закрытие страницы
         cancelBt.setOnClickListener {
             finish()
         }
 
+        // Слушатель кнопки сохранения предмета
         saveSubjectBt.setOnClickListener {
+            // Проверка на наличие названия предмета
             if (nameSubjectET.text.toString().trim().isNotEmpty()) {
+                // Проверка на добавленный файл
                 if (::myFile.isInitialized) {
                     dimView.visibility = View.VISIBLE
                     progressBar.visibility = View.VISIBLE
 
+                    // Запрос на сервер для добавления предмета в БД
                     ServerSubjectRequest.post_AddSubject(nameSubjectET.text.toString(), myFile) { isSuccess, answer ->
                         runOnUiThread {
                             dimView.visibility = View.GONE

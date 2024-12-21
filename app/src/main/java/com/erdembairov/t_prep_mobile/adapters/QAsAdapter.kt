@@ -12,13 +12,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.CommonData
 import com.erdembairov.t_prep_mobile.CommonFun
-import org.commonmark.parser.Parser
-import org.commonmark.renderer.html.HtmlRenderer
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.dataClasses.QA
+import kotlin.properties.Delegates
 
-class QAsAdapter(private val qas: ArrayList<QA>) :
-    RecyclerView.Adapter<QAsAdapter.QAHolder>() {
+// Адаптер для отображения вопросов
+class QAsAdapter(private val qas: ArrayList<QA>) : RecyclerView.Adapter<QAsAdapter.QAHolder>() {
 
     class QAHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var questionView: TextView = itemView.findViewById(R.id.questionTextView)
@@ -41,16 +40,21 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
     @SuppressLint("SetJavaScriptEnabled", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: QAHolder, position: Int) {
         val qa = qas[position]
+
         holder.questionView.text = qa.question
 
         holder.answerWebView.settings.javaScriptEnabled = true
+
+        // Подключаем MarkDown для отображения формул, сгенерированных LLM
         holder.answerWebView.loadDataWithBaseURL(null,
             CommonFun.convertMarkdownToHtml(qa.answer.trimIndent()), "text/html", "UTF-8", null)
 
+        // Нажатия на стрелку для вскрытия ответа
         holder.arrowIconView.setOnClickListener{
-            onItemClickListener?.invoke(position)
+            onArrowClickListener?.invoke(position)
         }
 
+        // Нажатие на кнопку изменить ответ
         holder.editAnswerBt.setOnClickListener {
             holder.answerWebView.visibility = View.GONE
             holder.editAnswerBt.visibility = View.GONE
@@ -59,6 +63,7 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
             holder.saveChangesBt.visibility = View.VISIBLE
         }
 
+        // Нажатие на кнопку сохранить изменения ответа
         holder.saveChangesBt.setOnClickListener {
             CommonData.openedSegment.qas[position].answer = holder.editAnswerET.text.toString()
 
@@ -80,12 +85,16 @@ class QAsAdapter(private val qas: ArrayList<QA>) :
             holder.arrowIconView.setImageResource(R.drawable.ic_arrow_down)
         }
 
-        holder.arrowIconView.visibility = if (qa.testStatus) View.GONE else View.VISIBLE
+        if (qa.testStatus) {
+            holder.arrowIconView.visibility = View.GONE
+        } else {
+            holder.arrowIconView.visibility = View.VISIBLE
+        }
     }
 
-    private var onItemClickListener: ((Int) -> Unit)? = null
+    private var onArrowClickListener: ((Int) -> Unit)? = null
     private var onSaveButtonClickListener: ((Int) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Int) -> Unit) { onItemClickListener = listener }
+    fun setOnArrowClickListener(listener: (Int) -> Unit) { onArrowClickListener = listener }
     fun setOnSaveButtonClickListener(listener: (Int) -> Unit) { onSaveButtonClickListener = listener }
 }

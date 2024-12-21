@@ -16,7 +16,6 @@ import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerUserRequest
 import com.erdembairov.t_prep_mobile.activities.Main.MainActivity
-import com.google.firebase.messaging.FirebaseMessaging
 
 class AuthFragment : Fragment() {
 
@@ -38,6 +37,7 @@ class AuthFragment : Fragment() {
         loginBt = view.findViewById(R.id.loginButton)
         registerBt = view.findViewById(R.id.registerButton)
 
+        // Слушатель нажатия на кнопку для восстановления аккаунта - пока не актуально
         forgetPassTV.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -46,55 +46,47 @@ class AuthFragment : Fragment() {
                 .commit()
         }
 
+        // Слушатель нажатия на кнопку авторизации
         loginBt.setOnClickListener {
+            // Получаем значения полей и избавляемся от пробелов
             val login = loginET.text.toString().trim()
             val password = passwordET.text.toString().trim()
 
-            if (isValidateInputs(login, password)) {
+            // Проверка валидности ввода
+            if (CommonFun.isValidateInputsAuth(main, login, password)) {
+
+                // Запрос на сервер на авторизацию
                 ServerUserRequest.get_AuthUser(login, password) { isSuccess, answer, user_id, user_name ->
                     if (isSuccess) {
 
-                        FirebaseMessaging.getInstance().getToken().addOnCompleteListener { tokenTask ->
-                            if (tokenTask.isSuccessful) {
-                                val token  = tokenTask.result
+                        val sharedPreferences = requireActivity().getSharedPreferences(
+                            "AuthPrefs",
+                            Context.MODE_PRIVATE
+                        )
 
-                                /*
-                                ServerUserRequest.put_FCMToken(token) { isSuccessToken ->
-                                    if (isSuccessToken) {
-                                        // емае
-                                    }
-                                }
-                                 */
-
-                                val sharedPreferences = requireActivity().getSharedPreferences(
-                                    "AuthPrefs",
-                                    Context.MODE_PRIVATE
-                                )
-
-                                with(sharedPreferences.edit()) {
-                                    putBoolean("isLoggedIn", true)
-                                    putString("FCM_token", token)
-                                    putString("user_id", user_id)
-                                    putString("user_name", user_name)
-                                    apply()
-                                }
-
-                                startActivity(Intent(requireContext(), MainActivity::class.java))
-                                requireActivity().finish()
-                            }
+                        // Сохранения общих данных пользователя
+                        with(sharedPreferences.edit()) {
+                            putBoolean("isLoggedIn", true)
+                            putString("user_id", user_id)
+                            putString("user_name", user_name)
+                            apply()
                         }
+
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
 
                     } else {
                         when (answer) {
-                            "401" -> { CommonFun.CreateSnackbar(main, "Неверный пароль") }
-                            "404" -> { CommonFun.CreateSnackbar(main, "Пользователь не найден") }
-                            else -> { CommonFun.CreateSnackbar(main, "Неизвестная ошибка") }
+                            "401" -> { CommonFun.createSnackbar(main, "Неверный пароль") }
+                            "404" -> { CommonFun.createSnackbar(main, "Пользователь не найден") }
+                            else -> { CommonFun.createSnackbar(main, "Неизвестная ошибка") }
                         }
                     }
                 }
             }
         }
 
+        // Слушатель кнопки регистрации и перехода на другую страницу
         registerBt.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -104,15 +96,5 @@ class AuthFragment : Fragment() {
         }
 
         return view
-    }
-
-    private fun isValidateInputs(login: String, password: String): Boolean {
-        return when {
-            login.isEmpty() || password.isEmpty() -> {
-                CommonFun.CreateSnackbar(main, "Вы не указали логин или пароль")
-                false
-            }
-            else -> true
-        }
     }
 }

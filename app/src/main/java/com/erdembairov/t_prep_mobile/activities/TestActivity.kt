@@ -23,7 +23,10 @@ class TestActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
+        // Флаг для кнопки проверки-завершения теста
         var checkBtStatus = false
+
+        // Создание списка случайных вопросов из каждой части предмета
         qasTest = createTest()
 
         testSubject = findViewById(R.id.testSubjectTextView)
@@ -32,14 +35,19 @@ class TestActivity: AppCompatActivity() {
         checkBt = findViewById(R.id.checkTestButton)
 
         adapter = QAsAdapter(qasTest)
-        adapter.setOnItemClickListener { position ->
+
+        // Слушатель нажатия на стрелка для отображения ответа
+        adapter.setOnArrowClickListener { position ->
             qasTest[position].boolArrow = !qasTest[position].boolArrow
             adapter.notifyDataSetChanged()
         }
 
         testRV.adapter = adapter
 
+        // Слушатель нажатия кнопки для самопроверки
         checkBt.setOnClickListener {
+
+            // Если пользователь нажал проверить
             if (!checkBtStatus) {
 
                 for (i in 0..<qasTest.size) {
@@ -47,20 +55,22 @@ class TestActivity: AppCompatActivity() {
                 }
                 adapter.notifyDataSetChanged()
 
+                // Меняем действие кнопки на закрытие
                 checkBt.text = "Завершить тест"
                 checkBtStatus = true
 
-            } else {
-                finish()
             }
+            // Закрытие страницы теста
+            else { finish() }
         }
     }
 
+    // Функция для создания случайных вопросов для теста
     private fun createTest(): ArrayList<QA> {
         val qasTest = ArrayList<QA>()
 
         for (segment in CommonData.openedSubject.segments) {
-            val qa = segment.qas.get((0..<segment.qas.size).random())
+            val qa = segment.qas[(0..<segment.qas.size).random()]
             qa.testStatus = true
             qa.boolArrow = false
 

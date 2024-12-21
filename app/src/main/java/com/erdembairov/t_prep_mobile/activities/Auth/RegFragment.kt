@@ -1,8 +1,6 @@
 package com.erdembairov.t_prep_mobile.activities.Auth
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +13,6 @@ import androidx.fragment.app.Fragment
 import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerUserRequest
-import com.erdembairov.t_prep_mobile.activities.Main.MainActivity
-import com.google.firebase.messaging.FirebaseMessaging
 
 class RegFragment : Fragment() {
 
@@ -27,11 +23,7 @@ class RegFragment : Fragment() {
     lateinit var registerBt: Button
 
     @SuppressLint("MissingInflatedId")
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_reg, container, false)
 
         main = view.findViewById(R.id.mainReg)
@@ -40,50 +32,30 @@ class RegFragment : Fragment() {
         repeatPasswordET = view.findViewById(R.id.repeatRegPasswordEditText)
         registerBt = view.findViewById(R.id.regButton)
 
+        // Слушатель кнопки для регистрации
         registerBt.setOnClickListener {
+            // Получаем значения полей и избавляемся от пробелов
             val login = loginET.text.toString().trim()
             val password = passwordET.text.toString().trim()
             val repeatPassword = repeatPasswordET.text.toString().trim()
 
-            if (CommonFun.isValidateInputs(main, login, password, repeatPassword)) {
+            // Проверка валидности ввода
+            if (CommonFun.isValidateInputsRegister(main, login, password, repeatPassword)) {
+
+                // Запрос на сервер для проверки логина и пароля пользователя
                 ServerUserRequest.post_RegisterUser(login, password) { isSuccess, answer, user_id, user_name ->
                     if (isSuccess) {
-
-                        FirebaseMessaging.getInstance().getToken().addOnCompleteListener { tokenTask ->
-                            if (tokenTask.isSuccessful) {
-                                val token  = tokenTask.result
-
-                                /*
-                                ServerUserRequest.put_FCMToken(token) { isSuccessToken ->
-                                    if (isSuccessToken) {
-                                        // емае
-                                    }
-                                }
-                                 */
-
-                                val sharedPreferences = requireActivity().getSharedPreferences(
-                                    "AuthPrefs",
-                                    Context.MODE_PRIVATE
-                                )
-
-                                with(sharedPreferences.edit()) {
-                                    putBoolean("isLoggedIn", true)
-                                    putString("FCM_token", token)
-                                    putString("user_id", user_id)
-                                    putString("user_name", user_name)
-                                    apply()
-                                }
-
-                                startActivity(Intent(requireContext(), MainActivity::class.java))
-                                requireActivity().finish()
-                            }
-                        }
+                        parentFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment, AuthFragment())
+                            .addToBackStack(null)
+                            .commit()
 
                     } else {
                         when (answer) {
-                            "400" -> { CommonFun.CreateSnackbar(main, "Пароль не соответствует требованиям") }
-                            "409" -> { CommonFun.CreateSnackbar(main, "Пользователь с таким именем уже существует") }
-                            else -> { CommonFun.CreateSnackbar(main, "Неизвестная ошибка") }
+                            "400" -> { CommonFun.createSnackbar(main, "Пароль не соответствует требованиям") }
+                            "409" -> { CommonFun.createSnackbar(main, "Пользователь с таким именем уже существует") }
+                            else -> { CommonFun.createSnackbar(main, "Неизвестная ошибка") }
                         }
                     }
                 }

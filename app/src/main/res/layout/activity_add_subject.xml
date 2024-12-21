@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
-                android:text="Выберите файл"
+                android:text="Выберите файл или фото"
                 android:textSize="@dimen/defTextSize" />
 
             <LinearLayout
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/lightGrey"
-                    android:text="Выбрать файл"
+                    android:text="Выбрать"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/defTextSize" />
 
@@ -60,7 +60,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_16dp"
-                    android:text="Файл не выбран"
                     android:textSize="@dimen/defTextSize" />
 
             </LinearLayout>

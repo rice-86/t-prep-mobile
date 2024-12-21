@@ -28,10 +28,15 @@ class SegmentActivity : AppCompatActivity() {
         partRV = findViewById(R.id.partRecyclerView)
         testBt = findViewById(R.id.testButton)
 
+        // Запрос на сервер для получения всех частей предмета и вопросов с ответами
         ServerSubjectRequest.get_Segments { isSuccess ->
             if (isSuccess) {
                 runOnUiThread {
+
+                    // Подключение Adapter для отображения частей
                     adapter = SegmentsAdapter(CommonData.openedSubject.segments)
+
+                    // Слушатель нажатия для перехода к просмотру вопросов и ответов
                     adapter.setOnItemClickListener { position ->
                         CommonData.openedSegment = CommonData.openedSubject.segments[position]
                         startActivity(Intent(this, QAActivity::class.java).putExtra("position", position))
@@ -42,6 +47,7 @@ class SegmentActivity : AppCompatActivity() {
             }
         }
 
+        // Слушатель нажатия для начала небольшого теста для самопроверки
         testBt.setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
         }

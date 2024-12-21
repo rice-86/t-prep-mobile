@@ -15,6 +15,7 @@ import java.io.IOException
 
 object ServerSubjectRequest {
 
+    // Запрос для добавления предмета
     fun post_AddSubject(name_subject: String, file: File, callback: (Boolean, String?) -> Unit) {
         val client = OkHttpClient()
 
@@ -69,6 +70,7 @@ object ServerSubjectRequest {
         })
     }
 
+    // Запрос для получения предметов пользователя
     fun get_Subjects(callback: (Boolean) -> Unit) {
         val client = OkHttpClient()
 
@@ -116,6 +118,7 @@ object ServerSubjectRequest {
         })
     }
 
+    // Запрос на удаления предмета
     fun delete_Subject(id: String, callback: (Boolean) -> Unit) {
         val client = OkHttpClient()
 
@@ -144,6 +147,7 @@ object ServerSubjectRequest {
         })
     }
 
+    // Запрос для получения частей и вопросов с ответами
     fun get_Segments(callback: (Boolean) -> Unit) {
         val client = OkHttpClient()
 
@@ -197,6 +201,7 @@ object ServerSubjectRequest {
         })
     }
 
+    // Запрос для повышения статуса интервального повторения
     fun put_UpdateSegmentStatus(id: String, callback: (Boolean) -> Unit) {
         val client = OkHttpClient()
 
@@ -227,6 +232,7 @@ object ServerSubjectRequest {
         })
     }
 
+    // Запрос для редактирования ответа
     fun patch_EditAnswer(question: String, answer: String, id: String, callback: (Boolean) -> Unit) {
         val client = OkHttpClient()
 

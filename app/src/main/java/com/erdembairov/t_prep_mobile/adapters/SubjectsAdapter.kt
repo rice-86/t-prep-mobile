@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.dataClasses.Subject
 
+// Адаптер для отображения предметов пользователя на главной странице
 class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
     RecyclerView.Adapter<SubjectsAdapter.SubjectHolder>() {
 
@@ -34,10 +35,12 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
         val subject = subjects[position]
         holder.nameView.text = subject.name
 
+        // Нажатие на предмет для последующего перехода на страницу с частями
         holder.mainView.setOnClickListener {
             onItemClickListener?.invoke(position)
         }
 
+        // Нажатие на удаление предмета
         holder.deleteBtView.setOnClickListener {
             onDeleteClickListener?.invoke(position)
         }

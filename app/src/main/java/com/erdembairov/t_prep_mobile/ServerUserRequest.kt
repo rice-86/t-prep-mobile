@@ -7,12 +7,14 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
 
 object ServerUserRequest {
+
+    // Запрос для регистрации
     fun post_RegisterUser(login: String, password: String, callback: (Boolean, String?, String?, String?) -> Unit) {
         val client = OkHttpClient()
 
@@ -40,8 +42,8 @@ object ServerUserRequest {
                             Log.e("Успешный ответ POST REGISTER", responseBody)
 
                             val jsonObject = JSONObject(responseBody)
-                            val user_id = jsonObject.getString("id")
-                            val user_name = jsonObject.getString("login")
+                            val user_id = "0" // jsonObject.getString("id")
+                            val user_name = "0" // jsonObject.getString("login")
 
                             callback(true, null, user_id, user_name)
                         }
@@ -63,6 +65,7 @@ object ServerUserRequest {
         })
     }
 
+    // Запрос для авторизации
     fun get_AuthUser(login: String, password: String, callback: (Boolean, String?, String?, String?) -> Unit) {
         val client = OkHttpClient()
 
@@ -106,46 +109,49 @@ object ServerUserRequest {
         })
     }
 
-    fun put_FCMToken(token: String, callback: (Boolean) -> Unit) {
+    // Запрос для отправки Firebase токена
+    fun post_FCMToken(token: String, user_id: String, callback: (Boolean) -> Unit) {
         val client = OkHttpClient()
 
         val multipartBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("FCM_token", token) // change it
+            .addFormDataPart("token", token)
+            .addFormDataPart("user_id", user_id)
             .build()
 
         val request = Request.Builder()
-            .url("http://${CommonData.ip}:8000/api/v1/users/token/") // change it
-            .put(multipartBody)
+            .url("http://${CommonData.ip}:8000/api/v1/users/add/token/")
+            .post(multipartBody)
             .build()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("Ошибка отправки POST UpdateSS", "${e.message}")
+                Log.e("Ошибка отправки POST FCM", "${e.message}")
                 callback(false)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
                     response.body?.string()?.let { responseBody ->
-                        Log.e("Успешный ответ POST UpdateSS", responseBody)
+                        Log.e("Успешный ответ POST FCM", responseBody)
                         callback(true)
                     }
                 } else {
-                    Log.e("Ошибка ответа POST UpdateSS", "${response.code}")
+                    Log.e("Ошибка ответа POST FCM", "${response.code}")
                     callback(false)
                 }
             }
         })
     }
 
+    // Запрос для выхода из аккаунта
     fun post_LogoutUser(callback: (Boolean, String?) -> Unit) {
         val client = OkHttpClient()
 
-        val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), "")
+        val requestBody = "".toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
         val request = Request.Builder()
-            .url("http://${CommonData.ip}:8000/api/v1/users/logout/")
+            .url("http://${CommonData.ip}:8000/api/v1/users/logout/${CommonData.user_id}/")
             .post(requestBody)
             .build()
 
@@ -173,6 +179,7 @@ object ServerUserRequest {
         })
     }
 
+    // Запрос для проверния наличия аккаунта в БД - не актуально
     fun post_Recovery1User(login: String, callback: (Boolean, String?) -> Unit) {
         val client = OkHttpClient()
 
@@ -215,6 +222,7 @@ object ServerUserRequest {
         })
     }
 
+    // Запрос для изменения пароля - не актуально
     fun post_Recovery2User(password: String, callback: (Boolean, String?) -> Unit) {
         val client = OkHttpClient()
 

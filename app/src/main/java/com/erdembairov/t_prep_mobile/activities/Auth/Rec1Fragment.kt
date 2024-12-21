@@ -42,15 +42,15 @@ class Rec1Fragment : Fragment() {
                     } else {
                         when (answer) {
                             "404" -> {
-                                CommonFun.CreateSnackbar(main, "Пользователь не найден")
+                                CommonFun.createSnackbar(main, "Пользователь не найден")
                             } else -> {
-                                CommonFun.CreateSnackbar(main, "Неизвестная ошибка")
+                                CommonFun.createSnackbar(main, "Неизвестная ошибка")
                             }
                         }
                     }
                 }
             } else {
-                CommonFun.CreateSnackbar(main, "Вы не указали логин")
+                CommonFun.createSnackbar(main, "Вы не указали логин")
             }
         }
 

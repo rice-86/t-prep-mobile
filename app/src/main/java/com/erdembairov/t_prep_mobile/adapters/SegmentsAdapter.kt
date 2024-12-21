@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.dataClasses.Segment
 
+// Адаптер для отображения частей предмета
 class SegmentsAdapter(private val segments: ArrayList<Segment>) :
     RecyclerView.Adapter<SegmentsAdapter.PartHolder>() {
 

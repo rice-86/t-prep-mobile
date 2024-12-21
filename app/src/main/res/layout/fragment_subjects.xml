@@ -38,13 +38,13 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/addSubjectButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/_16dp"
-        android:backgroundTint="@color/tPrepBackColor"
+        android:background="@drawable/button_shape"
         android:text="Добавить предмет"
         android:textColor="@color/tPrepTextColor"
         android:textSize="@dimen/defTextSize"
