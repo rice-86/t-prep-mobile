@@ -40,7 +40,6 @@ class QAsAdapter(private val qas: ArrayList<QA>) : RecyclerView.Adapter<QAsAdapt
     @SuppressLint("SetJavaScriptEnabled", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: QAHolder, position: Int) {
         val qa = qas[position]
-        var testChecked by Delegates.notNull<Boolean>()
 
         holder.questionView.text = qa.question
 
@@ -76,32 +75,20 @@ class QAsAdapter(private val qas: ArrayList<QA>) : RecyclerView.Adapter<QAsAdapt
             onSaveButtonClickListener?.invoke(position)
         }
 
-        // testChecked true присваивается только тогда когда начинаем тест
-        // Это нужно чтобы не отображалась кнопка для редактирования ответа во время теста
-        if (qa.testStatus) {
-            testChecked = true
+        if (qa.boolArrow) {
+            holder.editAnswerBt.visibility = View.VISIBLE
+            holder.answerWebView.visibility = View.VISIBLE
+            holder.arrowIconView.setImageResource(R.drawable.ic_arrow_up)
         } else {
-            // Если testChecked false, то делаем стандартное отображения
-            if (!testChecked) {
-                if (qa.boolArrow) {
-                    holder.editAnswerBt.visibility = View.VISIBLE
-                    holder.answerWebView.visibility = View.VISIBLE
-                    holder.arrowIconView.setImageResource(R.drawable.ic_arrow_up)
-                } else {
-                    holder.editAnswerBt.visibility = View.GONE
-                    holder.answerWebView.visibility = View.GONE
-                    holder.arrowIconView.setImageResource(R.drawable.ic_arrow_down)
-                }
-            // Иначе отображения для теста
-            } else {
-                if (qa.boolArrow) {
-                    holder.answerWebView.visibility = View.VISIBLE
-                    holder.arrowIconView.setImageResource(R.drawable.ic_arrow_up)
-                } else {
-                    holder.answerWebView.visibility = View.GONE
-                    holder.arrowIconView.setImageResource(R.drawable.ic_arrow_down)
-                }
-            }
+            holder.editAnswerBt.visibility = View.GONE
+            holder.answerWebView.visibility = View.GONE
+            holder.arrowIconView.setImageResource(R.drawable.ic_arrow_down)
+        }
+
+        if (qa.testStatus) {
+            holder.arrowIconView.visibility = View.GONE
+        } else {
+            holder.arrowIconView.visibility = View.VISIBLE
         }
     }
 

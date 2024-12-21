@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -29,14 +30,12 @@ class MainActivity : AppCompatActivity() {
         // Получаем значения пользователя из условного внутреннего хранения приложения
         val sharedPreferences = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-        val storedFCMToken = sharedPreferences.getString("FCM_token", null)
         val storedUserId = sharedPreferences.getString("user_id", null)
         val storedUserName = sharedPreferences.getString("user_name", null)
 
         // Проверяем имеется ли статус авторизации в аккаунт
         if (isLoggedIn) {
-            if ((storedUserId != null) && (storedUserName != null) && (storedFCMToken != null)) {
-                CommonData.FCM_token = storedFCMToken
+            if ((storedUserId != null) && (storedUserName != null)) {
                 CommonData.user_id = storedUserId
                 CommonData.user_name = storedUserName
 

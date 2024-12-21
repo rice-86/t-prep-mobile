@@ -38,10 +38,10 @@ class Rec2Fragment : Fragment() {
             val password = passwordET.text.toString().trim()
             val repeatPassword = repeatPasswordET.text.toString().trim()
 
-            if (CommonFun.isValidateInputs(main, null.toString(), password, repeatPassword)) {
+            if (CommonFun.isValidateInputsRegister(main, null.toString(), password, repeatPassword)) {
                 ServerUserRequest.post_Recovery2User(password) { isSuccess, answer ->
                     if (isSuccess) {
-                        CommonFun.CreateSnackbar( main,"Ваш пароль обновлён. Теперь у вас есть доступ к аккаунту")
+                        CommonFun.createSnackbar( main,"Ваш пароль обновлён. Теперь у вас есть доступ к аккаунту")
 
                         parentFragmentManager
                             .beginTransaction()
@@ -52,9 +52,9 @@ class Rec2Fragment : Fragment() {
                     } else {
                         when (answer) {
                             "400" -> {
-                                CommonFun.CreateSnackbar(main, "Время действия для восстановления пароля превышено")
+                                CommonFun.createSnackbar(main, "Время действия для восстановления пароля превышено")
                             } else -> {
-                                CommonFun.CreateSnackbar(main, "Неизвестная ошибка")
+                                CommonFun.createSnackbar(main, "Неизвестная ошибка")
                             }
                         }
                     }

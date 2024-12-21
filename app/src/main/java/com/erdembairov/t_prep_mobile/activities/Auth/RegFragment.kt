@@ -53,9 +53,9 @@ class RegFragment : Fragment() {
 
                     } else {
                         when (answer) {
-                            "400" -> { CommonFun.CreateSnackbar(main, "Пароль не соответствует требованиям") }
-                            "409" -> { CommonFun.CreateSnackbar(main, "Пользователь с таким именем уже существует") }
-                            else -> { CommonFun.CreateSnackbar(main, "Неизвестная ошибка") }
+                            "400" -> { CommonFun.createSnackbar(main, "Пароль не соответствует требованиям") }
+                            "409" -> { CommonFun.createSnackbar(main, "Пользователь с таким именем уже существует") }
+                            else -> { CommonFun.createSnackbar(main, "Неизвестная ошибка") }
                         }
                     }
                 }

@@ -37,10 +37,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.firebase.messaging)
-    implementation(libs.firebase.inappmessaging.display)
-    implementation(libs.firebase.analytics)
-    implementation(platform(libs.firebase.bom))
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.commonmark)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
@@ -50,7 +47,8 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.play.services.nearby)
+    implementation(libs.androidx.ui.desktop)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

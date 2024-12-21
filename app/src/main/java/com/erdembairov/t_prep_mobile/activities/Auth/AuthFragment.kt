@@ -16,7 +16,6 @@ import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.ServerUserRequest
 import com.erdembairov.t_prep_mobile.activities.Main.MainActivity
-import com.google.firebase.messaging.FirebaseMessaging
 
 class AuthFragment : Fragment() {
 
@@ -60,44 +59,27 @@ class AuthFragment : Fragment() {
                 ServerUserRequest.get_AuthUser(login, password) { isSuccess, answer, user_id, user_name ->
                     if (isSuccess) {
 
-                        // Запрос к Firebase для получения индивидуального токена устройства
-                        FirebaseMessaging.getInstance().getToken().addOnCompleteListener { tokenTask ->
-                            if (tokenTask.isSuccessful) {
-                                // Вот сам токен
-                                val token  = tokenTask.result
+                        val sharedPreferences = requireActivity().getSharedPreferences(
+                            "AuthPrefs",
+                            Context.MODE_PRIVATE
+                        )
 
-                                if (user_id != null) {
-
-                                    // Запрос на сервер для отправки токена
-                                    ServerUserRequest.post_FCMToken(token, user_id) { isSuccessToken ->
-                                        if (isSuccessToken) {
-                                            val sharedPreferences = requireActivity().getSharedPreferences(
-                                                "AuthPrefs",
-                                                Context.MODE_PRIVATE
-                                            )
-
-                                            // Сохранения общих данных пользователя
-                                            with(sharedPreferences.edit()) {
-                                                putBoolean("isLoggedIn", true)
-                                                putString("FCM_token", token)
-                                                putString("user_id", user_id)
-                                                putString("user_name", user_name)
-                                                apply()
-                                            }
-
-                                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                                            requireActivity().finish()
-                                        }
-                                    }
-                                }
-                            }
+                        // Сохранения общих данных пользователя
+                        with(sharedPreferences.edit()) {
+                            putBoolean("isLoggedIn", true)
+                            putString("user_id", user_id)
+                            putString("user_name", user_name)
+                            apply()
                         }
+
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
 
                     } else {
                         when (answer) {
-                            "401" -> { CommonFun.CreateSnackbar(main, "Неверный пароль") }
-                            "404" -> { CommonFun.CreateSnackbar(main, "Пользователь не найден") }
-                            else -> { CommonFun.CreateSnackbar(main, "Неизвестная ошибка") }
+                            "401" -> { CommonFun.createSnackbar(main, "Неверный пароль") }
+                            "404" -> { CommonFun.createSnackbar(main, "Пользователь не найден") }
+                            else -> { CommonFun.createSnackbar(main, "Неизвестная ошибка") }
                         }
                     }
                 }

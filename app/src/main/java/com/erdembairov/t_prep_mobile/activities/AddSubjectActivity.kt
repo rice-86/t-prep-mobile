@@ -48,8 +48,6 @@ class AddSubjectActivity : AppCompatActivity() {
         dimView = findViewById(R.id.dimView)
         progressBar = findViewById(R.id.progressBar)
 
-        // nameSubjectET.setText(CommonData.FCM_token)
-
         // Слушатель нажатия на кнопку выбора файла
         chooseFileBt.setOnClickListener {
             val intent = Intent().apply {
