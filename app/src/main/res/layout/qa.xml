@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    app:cardCornerRadius="20dp">
+    app:cardCornerRadius="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
                 android:text="Question"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -51,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:backgroundTint="@color/tPrepBackColor"
+            android:background="@drawable/button_shape"
             android:textColor="@color/tPrepTextColor"
             android:text="Редактировать ответ"
             android:visibility="gone"/>
@@ -67,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:backgroundTint="@color/tPrepBackColor"
+            android:background="@drawable/button_shape"
             android:textColor="@color/tPrepTextColor"
             android:visibility="gone"
             android:text="Сохранить изменения" />

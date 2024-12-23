@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
@@ -19,7 +19,7 @@ import com.erdembairov.t_prep_mobile.activities.Main.MainActivity
 
 class AuthFragment : Fragment() {
 
-    lateinit var main: FrameLayout
+    lateinit var main: CoordinatorLayout
     lateinit var loginET: EditText
     lateinit var passwordET: EditText
     lateinit var forgetPassTV: TextView

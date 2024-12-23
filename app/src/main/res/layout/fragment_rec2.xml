@@ -17,13 +17,6 @@
             android:text="Придумайте новый пароль"
             android:textSize="@dimen/defTextSize" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16dp"
-            android:layout_marginHorizontal="@dimen/_16dp"
-            android:text="Пароль должен содержать минимум:\n1. Одну заглавную букву\n2. Одно число\n3. Один специальный символ\nА также минимальной длины в 8 символов"
-            android:textSize="12dp" />
 
         <EditText
             android:id="@+id/recNewPasswordEditText"
@@ -51,10 +44,18 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16dp"
             android:layout_marginTop="@dimen/_16dp"
-            android:backgroundTint="@color/tPrepBackColor"
+            android:background="@drawable/button_shape"
             android:text="Восстановить доступ"
             android:textColor="@color/tPrepTextColor"
             android:textSize="@dimen/defTextSize" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:text="Пароль должен содержать минимум одну заглавную букву,\nодно число и один специальный символ.\nА также минимальной длины в 8 символов"
+            android:textSize="12dp" />
 
     </LinearLayout>
 

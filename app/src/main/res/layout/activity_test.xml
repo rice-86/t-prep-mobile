@@ -36,14 +36,13 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/checkTestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginHorizontal="@dimen/_16dp"
-        android:layout_marginBottom="@dimen/_16dp"
-        android:backgroundTint="@color/tPrepBackColor"
+        android:layout_marginBottom="@dimen/_20dp"
+        android:background="@drawable/button_shape"
         android:text="Проверить"
         android:textColor="@color/tPrepTextColor"
         android:textSize="@dimen/defTextSize" />

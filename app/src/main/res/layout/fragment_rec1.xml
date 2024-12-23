@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16dp"
-            android:backgroundTint="@color/tPrepBackColor"
+            android:background="@drawable/button_shape"
             android:text="Найти аккаунт"
             android:textColor="@color/tPrepTextColor"
             android:textSize="@dimen/defTextSize" />
