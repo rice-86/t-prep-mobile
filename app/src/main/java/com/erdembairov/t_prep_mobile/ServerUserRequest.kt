@@ -12,6 +12,8 @@ import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
 
+//
+
 object ServerUserRequest {
 
     // Запрос для регистрации
