@@ -1,32 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/yourUserName"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="@dimen/_16dp"
+            app:cardCornerRadius="@dimen/_10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/yourUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:text="Ваш логин:"
+                    android:textSize="@dimen/defTextSize"/>
+
+                <TextView
+                    android:id="@+id/yourSubjects"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:text="У вас N предметов"
+                    android:textSize="@dimen/defTextSize"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20dp"
             android:layout_marginHorizontal="@dimen/_16dp"
-            android:textSize="@dimen/defTextSize"/>
+            android:layout_gravity="bottom|left"
+            android:backgroundTint="@color/black"
+            android:background="@drawable/button_shape"
+            android:text="Выйти из аккаунта"
+            android:textColor="@color/tPrepTextColor"
+            android:textSize="@dimen/defTextSize" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_16dp"
-        android:layout_gravity="bottom|left"
-        android:backgroundTint="@color/tPrepBackColor"
-        android:text="Выйти из аккаунта"
-        android:textColor="@color/tPrepTextColor"
-        android:textSize="@dimen/defTextSize" />
 
 </FrameLayout>

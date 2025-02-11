@@ -98,7 +98,6 @@ object ServerSubjectRequest {
 
                             val name = jsonObject.getString("name")
                             val id = jsonObject.getString("id")
-                            val time = jsonObject.getString("time")
                             val status = jsonObject.getBoolean("status")
                             val segments = ArrayList<Segment>()
 
@@ -176,7 +175,7 @@ object ServerSubjectRequest {
                             val name = "Часть ${i + 1}"
                             val id = partObject.getString("id")
                             val status_segment = partObject.getString("status_segment")
-                            // val next_review_date = partObject.getString("next_review_date")
+                            val next_review_date = partObject.getString("next_review_date")
 
                             val qas = ArrayList<QA>()
 
@@ -186,7 +185,7 @@ object ServerSubjectRequest {
                                 qas.add(QA(key, answer, false, false))
                             }
 
-                            segments.add(Segment(name, id, qas, status_segment))
+                            segments.add(Segment(name, id, qas, status_segment, next_review_date))
                         }
                     }
 

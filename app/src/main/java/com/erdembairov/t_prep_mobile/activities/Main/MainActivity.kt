@@ -8,11 +8,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.erdembairov.t_prep_mobile.CommonData
+import com.erdembairov.t_prep_mobile.CommonFun
 import com.erdembairov.t_prep_mobile.R
 import com.erdembairov.t_prep_mobile.activities.Auth.AuthActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         val storedUserId = sharedPreferences.getString("user_id", null)
         val storedUserName = sharedPreferences.getString("user_name", null)
+        val storedAuthNotif = sharedPreferences.getBoolean("auth_notif", false)
 
         // Проверяем имеется ли статус авторизации в аккаунт
         if (isLoggedIn) {
@@ -56,6 +57,12 @@ class MainActivity : AppCompatActivity() {
 
         // Проверяем наличие разрешения на уведомления
         checkNotificationPermission()
+
+        // Первичная отправка уведомлений после авторизации
+        if (CommonData.subjects.size != 0 && !storedAuthNotif) {
+            CommonFun.authIntentNotification(this)
+            sharedPreferences.edit().putBoolean("auth_notif", true).apply()
+        }
 
         navigationView = findViewById(R.id.navigationViewMain)
 
@@ -91,6 +98,8 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
+
+
     }
 
     private fun createNotificationChannel() {

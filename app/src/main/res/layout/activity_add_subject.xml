@@ -2,7 +2,8 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/mainAddSubject"
@@ -46,14 +47,24 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/chooseFileButton"
-                    android:layout_width="wrap_content"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/lightGrey"
-                    android:text="Выбрать"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/defTextSize" />
+                    app:cardCornerRadius="@dimen/_10dp"
+                    app:cardElevation="0dp" >
+
+                    <Button
+                        android:id="@+id/chooseFileButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#00000000"
+                        android:text="Выбрать"
+                        android:textColor="@color/tPrepTextColor"
+                        android:textSize="@dimen/defTextSize"
+                        android:drawableBottom="@drawable/ic_load_file"/>
+
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/fileNotChoosedTextView"
@@ -67,18 +78,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_16dp"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginBottom="@dimen/_20dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/cancelButton"
+                <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/buttonWidth"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:backgroundTint="@color/lightGrey"
-                    android:text="Отмена"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/defTextSize" />
+                    android:layout_weight="1"
+                    app:cardCornerRadius="@dimen/_10dp"
+                    app:cardElevation="0dp" >
+
+                    <Button
+                        android:id="@+id/cancelButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#00000000"
+                        android:layout_gravity="center"
+                        android:text="Отмена"
+                        android:textColor="@color/tPrepTextColor"
+                        android:textSize="@dimen/defTextSize" />
+
+                </androidx.cardview.widget.CardView>
 
                 <Button
                     android:id="@+id/saveButton"
@@ -86,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/tPrepBackColor"
+                    android:background="@drawable/button_shape"
                     android:text="Сохранить"
                     android:textColor="@color/tPrepTextColor"
                     android:textSize="@dimen/defTextSize" />

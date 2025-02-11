@@ -36,14 +36,14 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/finishButton"
         android:layout_width="@dimen/buttonWidth"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginHorizontal="@dimen/_16dp"
-        android:layout_marginBottom="@dimen/_16dp"
-        android:backgroundTint="@color/tPrepBackColor"
+        android:layout_marginBottom="@dimen/_20dp"
+        android:background="@drawable/button_shape"
         android:text="Повторено"
         android:textColor="@color/tPrepTextColor"
         android:textSize="@dimen/defTextSize" />

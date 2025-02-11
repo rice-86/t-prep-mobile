@@ -15,7 +15,14 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationViewMain"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
+        app:itemTextAppearanceActiveBoldEnabled="false"
+        app:itemIconSize="@dimen/_20dp"
+        app:itemRippleColor="@color/tPrepLightBlueColor"
+        android:background="@color/white"
+        app:itemIconTint="@color/color_selector"
+        app:itemTextColor="@color/color_selector"
+        app:itemActiveIndicatorStyle="@color/tPrepLightBlueColor"
         app:menu="@menu/bottom_navigation_menu"/>
 
 </LinearLayout>
